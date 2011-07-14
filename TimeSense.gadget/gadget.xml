@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<gadget>
+    <name>Time Sense</name>
+    <description>Visual indicator for the passage of time.</description>
+    <version>0.1.0</version>
+    <author name="Rudy L.">
+        <info url="rudyl.com" />
+    </author>
+    <copyright>&#0169; Rudy L.</copyright>
+    <hosts>
+        <host name="sidebar">
+            <autoscaleDPI>true</autoscaleDPI>
+            <base type="HTML" apiVersion="1.0.0" src="timesense/main.html" />
+            <permissions>Full</permissions>
+            <platform minPlatformVersion="1.0" />
+        </host>
+    </hosts>
+</gadget>
