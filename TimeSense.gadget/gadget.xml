@@ -2,7 +2,7 @@
 <gadget>
     <name>Time Sense</name>
     <description>Visual indicator for the passage of time.</description>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <author name="Rudy L.">
         <info url="rudyl.com" />
     </author>

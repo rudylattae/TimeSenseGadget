@@ -6,17 +6,25 @@
         body {
             margin: 0;
             width: 130px;
-            height: 150px;
+            height: 75px;
             background-color: #333;
-            color: #fff;
-        }
+            font-size: 1em;
+            color: #ccc; }
         #wrapper {
-            margin: 0.5em; }
+            margin: 0.35em; }
+        #indicator {
+            color: #fff; 
+            padding-bottom: 0.35em;
+            border-bottom: 1px solid #555; }
+        #info {
+            font-size: 0.8em;
+            padding-top: 0.35em; }
     </style>
 </head>
 <body>
     <div id="wrapper" class="small">
-        <p>Time Sense - coming soon</p>
+        <div id="indicator">||||||~~~~~~~~~~~</div>
+        <div id="info">{{ x }} {{ units }} to {{ event }}</div>
     </div>
 </body>
 </html>

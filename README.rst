@@ -10,3 +10,5 @@ digital readout.
 This is the Windows Desktop Gadget implementation which describes the 
 passage of time with visual cues like progress bars and color shifting.
 
+
+H
