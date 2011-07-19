@@ -9,22 +9,108 @@
             height: 75px;
             background-color: #333;
             font-size: 1em;
+            overflow: auto;
             color: #ccc; }
-        #wrapper {
-            margin: 0.35em; }
-        #indicator {
-            color: #fff; 
-            padding-bottom: 0.35em;
-            border-bottom: 1px solid #555; }
-        #info {
-            font-size: 0.8em;
-            padding-top: 0.35em; }
+        #content {
+            margin: 0.25em; }
+            
+        .texty-indicator {
+            border: #fff }
+            .texty-indicator .progress {
+                font-family: Arial;
+                letter-spacing: 1px;
+                color: green;
+                background-color: #000;
+                padding-left: 0.05em;
+                padding-bottom: 0.1em;
+                margin-bottom: 0.25em;
+                border-bottom: 1px solid #555; }
+            .texty-indicator .info {
+                font-size: 0.8em;
+                padding-top: 0.35em; }
     </style>
 </head>
 <body>
-    <div id="wrapper" class="small">
-        <div id="indicator">||||||~~~~~~~~~~~</div>
-        <div id="info">{{ x }} {{ units }} to {{ event }}</div>
+    <div id="content" class="small">
+
     </div>
 </body>
+<script type="text/html" id="texty-progress-indicator-html">
+    <div class="{type}-indicator">
+        <div class="progress {progress}">{display}</div>
+        <div class="info">{count} {units} to {target}</div>
+    </div>
+</script>
+<script type="text/javascript">
+    var template = $('#texty-progress-indicator-html').innerHTML;
+    
+    var begin = 0;
+    var end = 10;
+    var count = 0;
+    var marker = '|';
+    var maxMarkers = 30;
+    
+    var indicator = {
+        type: 'texty',
+        progress: getProgress(),
+        display: getDisplay(),
+        count: count,
+        units: 'days',
+        target: 'Some important thing'
+    };
+    
+    var timer;
+    
+    timer = setInterval(function() {
+        tick();
+    }, 1000)
+    
+    function tick() {
+        count += 1;
+        
+        indicator.count = count;
+        indicator.progress = getProgress();
+        indicator.display = getDisplay();
+        
+        $('#content').innerHTML = t(template, indicator);
+        
+        if (count === end) {
+            clearInterval(timer);
+        }
+    }
+    
+    function getProgress() {
+        return (count/ end) * 100;
+    }
+    
+    function getDisplay() {
+        var progress = getProgress();
+        var limit = (progress / 100) * maxMarkers;
+        var display = '';
+        for (i=1; i<=limit; i++) {
+            display += marker;
+        }
+        return display;
+    }
+    
+    
+    // util
+    // =======
+        
+    function $(id) {
+        if (id.length <= 1) { return; }
+        
+        var id = id.substr(1, id.lenght);
+        return document.getElementById(id);
+    }
+    
+    
+    // http://mir.aculo.us/2011/03/09/little-helpers-a-tweet-sized-javascript-templating-engine/
+    function t(s,d){
+        for(var p in d)
+            s=s.replace(new RegExp('{'+p+'}','g'), d[p]);
+        return s;
+    }
+
+</script>
 </html>
