@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+    <title>Specs | TimeSense Gadget</title>
+    <link rel="stylesheet" type="text/css" href="spec/jasmine/jasmine.css">
+    <script type="text/javascript" src="spec/jasmine/jasmine.js"></script>
+    <script type="text/javascript" src="spec/jasmine/jasmine-html.js"></script>
+    <script type="text/javascript" src="TimeSense.gadget/timesense/core.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>Specs | TimeSense Gadget</h1>
+    </div>
+</body>
+<script type="text/javascript" src="spec/all.spec.js"></script>
+<script type="text/javascript">
+    (function() {
+        var jasmineEnv = jasmine.getEnv();
+        var trivialReporter = new jasmine.TrivialReporter();
+        
+        jasmineEnv.addReporter(trivialReporter);
+        
+        jasmineEnv.specFilter = function(spec) {
+            return trivialReporter.specFilter(spec);
+        };
+      
+        window.onload = function() {
+            jasmineEnv.execute(); 
+        }
+    })();
+</script>
+</html>

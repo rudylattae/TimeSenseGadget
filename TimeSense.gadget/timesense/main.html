@@ -41,12 +41,17 @@
         <div class="info">{count} {units} to {target}</div>
     </div>
 </script>
+<script type="text/javascript" src="core.js"></script>
+<script type="text/javascript" src="main.js"></script>
 <script type="text/javascript">
     var template = $('#texty-progress-indicator-html').innerHTML;
     
     var begin = 0;
     var end = 10;
+    
     var count = 0;
+    var interval = 1000 * 60 * 60 * 24;
+    
     var marker = '|';
     var maxMarkers = 30;
     
@@ -56,14 +61,14 @@
         display: getDisplay(),
         count: count,
         units: 'days',
-        target: 'Some important thing'
+        target: 'Target event'
     };
     
     var timer;
     
     timer = setInterval(function() {
         tick();
-    }, 1000)
+    }, interval );
     
     function tick() {
         count += 1;
@@ -93,24 +98,11 @@
         return display;
     }
     
+      
     
-    // util
+    // main
     // =======
-        
-    function $(id) {
-        if (id.length <= 1) { return; }
-        
-        var id = id.substr(1, id.lenght);
-        return document.getElementById(id);
-    }
+    tick();
     
-    
-    // http://mir.aculo.us/2011/03/09/little-helpers-a-tweet-sized-javascript-templating-engine/
-    function t(s,d){
-        for(var p in d)
-            s=s.replace(new RegExp('{'+p+'}','g'), d[p]);
-        return s;
-    }
-
 </script>
 </html>
