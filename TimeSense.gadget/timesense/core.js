@@ -1,23 +1,22 @@
-var dateTime = {
+function DateTime() {}
 
-    /**
-     * Calculates the number of days from now to the given date
-     */
-    daysUntil: function(y, m, d) {
-        var start = dateTime.now();
-        var end = new Date(y, m, d);
-        var day = 1000 * 60 * 60 * 24;
-        var diff = Math.ceil((end.getTime() - start.getTime()) / day);
-        return diff;
-    },
+/**
+ * Wrapper function to return current date+time
+ */
+DateTime.prototype.now = function() {
+    return new Date;
+}
 
-    /**
-     * Wrapper function to return current date+time
-     */
-    now: function() {
-        return new Date();
-    }
-};
+/**
+ * Calculates the number of days from now to the given date
+ */
+DateTime.prototype.daysUntil = function(y, m, d) {
+    var start = this.now();
+    var end = new Date(y, m, d);
+    var day = 1000 * 60 * 60 * 24;
+    var diff = Math.ceil((end.getTime() - start.getTime()) / day);
+    return diff;
+}
 
 
 /**
@@ -65,23 +64,25 @@ ProgressTracker.prototype.toJSON = function() {
 
 
 /**
- * A simple indicator. It tracks the passage of time and displays the progress
- * toward a target event as a text bar.
+ * A plain time sense provider. It tracks the passage of time and displays the
+ * flow away from or towards the focus (date time) as a text bar.
  */
-function TextyIndicator(options) {
+function TextyTimeSensor(options, dt) {
     var options = options || {};
+    var dt = dt || new DateTime;
     
-    this.type = options.type ? options.type : 'texty';
+    this.indicator = options.indicator ? options.indicator : 'texty';
+    this.title = options.title ? options.title : 'An event';
+    this.focus = options.focus ? options.focus : dt.now();
     this.units = options.units ? options.units : 'days';
-    this.target = options.target ? options.target : 'An event';
     this.tracker = options.tracker ? new ProgressTracker(options.tracker) : new ProgressTracker;
 }
-TextyIndicator.prototype.tick = function() {
-    this.tracker.percent(1);
+TextyTimeSensor.prototype.flow = function() {
+    this.tracker.value(1);
 }
 
 
-// utiil
+// util
 // ======
 
 // http://mir.aculo.us/2011/03/09/little-helpers-a-tweet-sized-javascript-templating-engine/

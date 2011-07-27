@@ -1,24 +1,42 @@
-describe('daysUntil', function() {
-    beforeEach(function() {
-        spyOn(dateTime, 'now').andReturn(new Date(2011, 6, 20));
+describe('DateTime', function() {
+
+    describe('#now', function() {
+        it('creates a new Date object to get the current time', function() {
+            var dt = new DateTime;
+            var expectedNow = new Date(2011, 6, 20);
+            var tardis = function(dateTime) {
+                return dateTime;
+            };
+            spyOn(window, 'Date').andReturn(tardis(expectedNow));
+            
+            expect(dt.now()).toEqual(expectedNow);
+        });
     });
     
-    it('returns 2, given an end date 2 days away', function() {
-        var days = dateTime.daysUntil(2011, 6, 22);
+    describe('#daysUntil', function() {
+        var dt = new DateTime;
         
-        expect(days).toEqual(2);
-    });
+        beforeEach(function() {
+            spyOn(dt, 'now').andReturn(new Date(2011, 6, 20));
+        });
+        
+        it('returns 2, given an end date 2 days away', function() {
+            var days = dt.daysUntil(2011, 6, 22);
+            
+            expect(days).toEqual(2);
+        });
 
-    it('returns 5, given an end date 5 days away', function() {
-        var days = dateTime.daysUntil(2011, 6, 25);
-        
-        expect(days).toEqual(5);
-    });
+        it('returns 5, given an end date 5 days away', function() {
+            var days = dt.daysUntil(2011, 6, 25);
+            
+            expect(days).toEqual(5);
+        });
 
-    it('returns -7, given an end date 7 days earlier', function() {
-        var days = dateTime.daysUntil(2011, 6, 13);
-        
-        expect(days).toEqual(-7);
+        it('returns -7, given an end date 7 days earlier', function() {
+            var days = dt.daysUntil(2011, 6, 13);
+            
+            expect(days).toEqual(-7);
+        });
     });
 });
 
@@ -34,7 +52,7 @@ describe('ProgressTracker', function() {
         });
     });
     
-    describe('.value()', function() {
+    describe('#value', function() {
         var tracker;
         
         beforeEach(function() {
@@ -68,7 +86,7 @@ describe('ProgressTracker', function() {
         });
     });
     
-    describe('percent()', function() {
+    describe('#percent', function() {
         var tracker;
         
         describe('given a max of 10', function() {
@@ -132,7 +150,7 @@ describe('ProgressTracker', function() {
         });
     });
         
-    describe('.toJSON()', function() {        
+    describe('#toJSON', function() {        
         it('returns a JSON representation of the tracker', function() {
             var tracker = new ProgressTracker({
                 max: 100
@@ -148,7 +166,7 @@ describe('ProgressTracker', function() {
         });
     });
         
-    describe('.render()', function() {
+    describe('#render', function() {
         var tracker;
         
         beforeEach(function() {
@@ -167,55 +185,68 @@ describe('ProgressTracker', function() {
     });
 });
 
-describe('TextyIndicator', function() {
+describe('TextyTimeSensor', function() {
     describe('when created', function() {
         it('initializes with sensible defaults and a tracker given no options', function() {
-            var indicator = new TextyIndicator();
+            var expectedTime = new Date(2011, 6, 20);
+            var tardis = new DateTime;
+            spyOn(tardis, 'now').andReturn(expectedTime);
             
-            expect(indicator.type).toEqual('texty');
-            expect(indicator.units).toEqual('days');
-            expect(indicator.target).toEqual('An event');
+            var sensor = new TextyTimeSensor({}, tardis);
             
-            expect(indicator.tracker).not.toBe(undefined);
-            expect(indicator.tracker).not.toBeNull();
+            
+            expect(sensor.indicator).toEqual('texty');
+            expect(sensor.title).toEqual('An event');
+            expect(sensor.focus).toEqual(expectedTime);
+            expect(sensor.units).toEqual('days');
+            
+            expect(sensor.tracker).not.toBe(undefined);
+            expect(sensor.tracker).not.toBeNull();
         });
         
-        it('initializes with the given values for the indicator', function() {
-            var indicator = new TextyIndicator({
-                type: 'custom',
-                units: 'hours',
-                target: 'New Year!'
+        it('initializes with the given values for the sensor', function() {
+            var expectedDate = new Date(2011, 1, 30);
+            var expectedIndicator = 'custom';
+            var expectedTitle = 'New year!';
+            var expectedUnits = 'hours';
+            
+            var sensor = new TextyTimeSensor({
+                indicator: expectedIndicator,
+                title: expectedTitle,
+                focus: expectedDate,
+                units: expectedUnits
             });
             
-            expect(indicator.type).toEqual('custom');
-            expect(indicator.units).toEqual('hours');
-            expect(indicator.target).toEqual('New Year!');
+            expect(sensor.indicator).toEqual(expectedIndicator);
+            expect(sensor.title).toEqual(expectedTitle);
+            expect(sensor.focus).toEqual(expectedDate);
+            expect(sensor.units).toEqual(expectedUnits);
         });
         
-        it('initializes with the given values for the tracker', function() {
-            var indicator = new TextyIndicator({
+        it('initializes the tracker based on the units and focus datetime', function() {
+            var sensor = new TextyTimeSensor({
                 tracker: {
                     max: 30
                 }
             });
             
-            expect(indicator.tracker.max).toEqual(30);
+            expect(sensor.tracker.max).toEqual(30);
         });
     });
 
-    describe('.tick()', function() {        
-        it('advances the tracker by 1% ', function() {
-            var indicator = new TextyIndicator({
+    describe('#flow', function() {        
+        it('advances the tracker by 1', function() {
+            var sensor = new TextyTimeSensor({
                 tracker: {
                     max: 20
                 }
             });
-            var tracker = indicator.tracker;
-            spyOn(tracker, 'percent');
+            var tracker = sensor.tracker;
+            spyOn(tracker, 'value');
             
-            indicator.tick();
+            sensor.flow();
             
-            expect(tracker.percent).toHaveBeenCalledWith(1);
+            expect(tracker.value).toHaveBeenCalledWith(1);
         });
     });
 });
