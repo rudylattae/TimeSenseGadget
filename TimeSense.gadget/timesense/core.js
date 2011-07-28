@@ -64,7 +64,7 @@ ProgressTracker.prototype.toJSON = function() {
 
 
 /**
- * A plain time sense provider. It tracks the passage of time and displays the
+ * A textual time sense provider. It tracks the passage of time and displays the
  * flow away from or towards the focus (date time) as a text bar.
  */
 function TextyTimeSensor(options, dt) {
@@ -72,10 +72,21 @@ function TextyTimeSensor(options, dt) {
     var dt = dt || new DateTime;
     
     this.indicator = options.indicator ? options.indicator : 'texty';
-    this.title = options.title ? options.title : 'An event';
-    this.focus = options.focus ? options.focus : dt.now();
+    this.title = options.title ? options.title : null;
+    this.reference = options.reference ? options.reference : dt.now();
+    this.focus = options.focus ? options.focus : null;
     this.units = options.units ? options.units : 'days';
-    this.tracker = options.tracker ? new ProgressTracker(options.tracker) : new ProgressTracker;
+    
+    if (this.focus) {
+        var day = 1000 * 60 * 60 * 24;
+        var diff = Math.ceil((this.focus.getTime() - this.reference.getTime()) / day);
+        var trackerOptions = {
+            max: diff
+        };
+    } else {
+        var trackerOptions = {};
+    }
+    this.tracker = new ProgressTracker(trackerOptions);
 }
 TextyTimeSensor.prototype.flow = function() {
     this.tracker.value(1);
