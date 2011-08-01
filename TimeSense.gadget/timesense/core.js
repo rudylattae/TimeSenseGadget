@@ -88,8 +88,14 @@ function TextyTimeSensor(options, dt) {
     }
     this.tracker = new ProgressTracker(trackerOptions);
 }
-TextyTimeSensor.prototype.flow = function() {
+TextyTimeSensor.prototype.tick = function() {
     this.tracker.value(1);
+}
+TextyTimeSensor.prototype.toJSON = function() {
+    return {};
+}
+TextyTimeSensor.prototype.render = function(template) {
+    return t(template, this.toJSON());
 }
 
 
