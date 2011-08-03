@@ -1,8 +1,8 @@
 describe('TimeSensor', function() {
     describe('when created', function() {
         it('initializes with the given values for the sensor', function() {
-            var expectedADate = new Date(2011, 1, 30);
-            var expectedBDate = new Date(2011, 1, 30);
+            var expectedADate = new Date(2011, 11, 30);
+            var expectedBDate = new Date(2012, 0, 1);
             var expectedIndicator = 'custom';
             var expectedTitle = 'New year!';
             var expectedUnits = 'hours';
@@ -49,13 +49,33 @@ describe('TimeSensor', function() {
         });
     });
 
-    xdescribe('#render', function() {        
-        it('renders the view for the sensor given a template', function() {
-            var sensor = new TimeSensor();
+    describe('#toJSON', function() {        
+        it('returns a JSON representation of the sensor and the tracker it uses', function() {
+            var expectedTitle = 'New year!';
+            var expectedADate = new Date(2011, 11, 1);
+            var expectedBDate = new Date(2012, 0, 1);
+            var sensor = new TimeSensor({
+                title: expectedTitle,
+                a: expectedADate,
+                b: expectedBDate
+            });
             
-            var output = sensor.render('{}');
+            spyOn(Date, 'now').andReturn(new Date(2011, 11, 26));
+            sensor.tick();
             
-            expect(output).toBe('');
+            expect(sensor.toJSON()).toEqual({
+                params: {
+                    title: expectedTitle,
+                    a: expectedADate,
+                    b: expectedBDate
+                },
+                tracker: {
+                    min: 0,
+                    max: 2678400000,
+                    percent: 20,
+                    value: 518400000
+                }
+            });
         });
     });
 });

@@ -70,10 +70,14 @@ TimeSensor.prototype.tick = function() {
     this.tracker.value(elapsed);
 }
 TimeSensor.prototype.toJSON = function() {
-    return {};
-}
-TimeSensor.prototype.render = function(template) {
-    return t(template, this.toJSON());
+    return {
+        params: {
+            title: this.title,
+            a: this.a,
+            b: this.b
+        },
+        tracker: this.tracker.toJSON()
+    };
 }
 
 
