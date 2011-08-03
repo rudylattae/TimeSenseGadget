@@ -1,22 +1,9 @@
-function DateTime() {}
 
 /**
- * Wrapper function to return current date+time
+ * ECMAScript 5 polyfill for Date.now method
+ * https://gist.github.com/1035932
  */
-DateTime.prototype.now = function() {
-    return new Date;
-}
-
-/**
- * Calculates the number of days from now to the given date
- */
-DateTime.prototype.daysUntil = function(y, m, d) {
-    var start = this.now();
-    var end = new Date(y, m, d);
-    var day = 1000 * 60 * 60 * 24;
-    var diff = Math.ceil((end.getTime() - start.getTime()) / day);
-    return diff;
-}
+Date.now = Date.now || function(){ return+new Date }
 
 
 /**
@@ -66,10 +53,8 @@ ProgressTracker.prototype.toJSON = function() {
 /**
  * A textual time sense provider.
  */
-function TextyTimeSensor(options, dt) {
+function TextyTimeSensor(options) {
     var options = options || {};
-    
-    this.dt = dt || new DateTime;
     
     this.indicator = options.indicator ? options.indicator : 'texty';
     this.title = options.title ? options.title : null;
@@ -81,7 +66,7 @@ function TextyTimeSensor(options, dt) {
     this.tracker = new ProgressTracker({max: diff});
 }
 TextyTimeSensor.prototype.tick = function() {
-    var elapsed = _date(this.b).from(_date(this.dt.now()), true, true);
+    var elapsed = _date(this.b).from(_date(Date.now()), true, true);
     this.tracker.value(elapsed);
 }
 TextyTimeSensor.prototype.toJSON = function() {

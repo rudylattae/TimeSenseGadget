@@ -33,14 +33,13 @@ describe('TextyTimeSensor', function() {
     });
 
     describe('#tick', function() {        
-        it('sets the tracker value to the number of milliseconds ellapsed so far', function() {
-            var tardis = new DateTime;
-            spyOn(tardis, 'now').andReturn(new Date(2011, 11, 26));
+        it('sets the tracker value to the number of milliseconds elapsed so far', function() {
+            spyOn(Date, 'now').andReturn(new Date(2011, 11, 26));
             
             var sensor = new TextyTimeSensor({
                 a: new Date(2011, 11, 1),
                 b: new Date(2012, 0, 1)
-            }, tardis);
+            });
             var tracker = sensor.tracker;
             spyOn(tracker, 'value');
             
