@@ -51,9 +51,9 @@ ProgressTracker.prototype.toJSON = function() {
 
 
 /**
- * A textual time sense provider.
+ * A basic time sense provider.
  */
-function TextyTimeSensor(options) {
+function TimeSensor(options) {
     var options = options || {};
     
     this.indicator = options.indicator ? options.indicator : 'texty';
@@ -65,14 +65,14 @@ function TextyTimeSensor(options) {
     var diff = _date(this.b).from(_date(this.a), true, true);
     this.tracker = new ProgressTracker({max: diff});
 }
-TextyTimeSensor.prototype.tick = function() {
+TimeSensor.prototype.tick = function() {
     var elapsed = _date(this.b).from(_date(Date.now()), true, true);
     this.tracker.value(elapsed);
 }
-TextyTimeSensor.prototype.toJSON = function() {
+TimeSensor.prototype.toJSON = function() {
     return {};
 }
-TextyTimeSensor.prototype.render = function(template) {
+TimeSensor.prototype.render = function(template) {
     return t(template, this.toJSON());
 }
 

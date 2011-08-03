@@ -1,4 +1,4 @@
-describe('TextyTimeSensor', function() {
+describe('TimeSensor', function() {
     describe('when created', function() {
         it('initializes with the given values for the sensor', function() {
             var expectedADate = new Date(2011, 1, 30);
@@ -7,7 +7,7 @@ describe('TextyTimeSensor', function() {
             var expectedTitle = 'New year!';
             var expectedUnits = 'hours';
             
-            var sensor = new TextyTimeSensor({
+            var sensor = new TimeSensor({
                 indicator: expectedIndicator,
                 title: expectedTitle,
                 a: expectedADate,
@@ -23,7 +23,7 @@ describe('TextyTimeSensor', function() {
         });
 
         it('initializes the tracker "max" to the milliseconds difference between a and b', function() {
-            var sensor = new TextyTimeSensor({
+            var sensor = new TimeSensor({
                 a: new Date(2011, 0, 1),
                 b: new Date(2011, 0, 30)
             });
@@ -36,7 +36,7 @@ describe('TextyTimeSensor', function() {
         it('sets the tracker value to the number of milliseconds elapsed so far', function() {
             spyOn(Date, 'now').andReturn(new Date(2011, 11, 26));
             
-            var sensor = new TextyTimeSensor({
+            var sensor = new TimeSensor({
                 a: new Date(2011, 11, 1),
                 b: new Date(2012, 0, 1)
             });
@@ -51,7 +51,7 @@ describe('TextyTimeSensor', function() {
 
     xdescribe('#render', function() {        
         it('renders the view for the sensor given a template', function() {
-            var sensor = new TextyTimeSensor();
+            var sensor = new TimeSensor();
             
             var output = sensor.render('{}');
             
