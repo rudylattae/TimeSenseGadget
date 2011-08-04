@@ -78,45 +78,42 @@ TimeSlice.prototype.toJSON = function() {
     };
 }
 
-/**
- * A basic time sense provider.
- */
-function TimeSensor(options) {
-    var options = options || {};
-    
-    this.focus = options.focus ? options.focus : null;
-    this.a = options.a ? options.a : null;
-    this.b = options.b ? options.b : null;
-    
-    var diff = _date(this.b).from(_date(this.a), true, true);
-    this.tracker = new ProgressTracker({max: diff});
-}
-TimeSensor.prototype.tick = function() {
-    var elapsed = _date(this.b).from(_date(Date.now()), true, true);
-    this.tracker.value(elapsed);
-}
-TimeSensor.prototype.toJSON = function() {
-    return {
-        params: {
-            focus: this.focus,
-            a: this.a,
-            b: this.b
-        },
-        tracker: this.tracker.toJSON()
-    };
-}
 
 /**
- * A view for a sensor
+ * Keeps track of and provides feedback on the passage of time.
  */
-function Indicator(options) {
+function Timekeeper(options) {
     var options = options || {};
     
-    this.type = options.type ? options.type : 'texty';
-    this.sensor = options.sensor ? options.sensor : null;
+    this.title = options.title ? options.title : null;
+    this.type = options.type ? options.type : null;
+    this.onTick = options.onTick ? options.onTick : null;
+    
+    if (options.reference && options.focus) {
+        this.slice = new TimeSlice({
+            reference: options.reference,
+            focus: options.focus
+        });
+        
+        this.tracker = new ProgressTracker({
+            max: this.slice.span()
+        });
+        this.tracker.percent(100);
+    }
 }
-Indicator.prototype.render = function(template) {
-    return template;
+Timekeeper.prototype.tick = function() {
+    this.tracker.value(this.slice.remaining());
+    if (this.onTick) {
+        this.onTick(this);
+    }
+}
+Timekeeper.prototype.toJSON = function() {
+    return {
+        title: this.title,
+        type: this.type,
+        slice: this.slice.toJSON(),
+        tracker: this.tracker.toJSON()
+    };
 }
 
 
