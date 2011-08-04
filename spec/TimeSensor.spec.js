@@ -3,23 +3,17 @@ describe('TimeSensor', function() {
         it('initializes with the given values for the sensor', function() {
             var expectedADate = new Date(2011, 11, 30);
             var expectedBDate = new Date(2012, 0, 1);
-            var expectedIndicator = 'custom';
-            var expectedTitle = 'New year!';
-            var expectedUnits = 'hours';
+            var expectedFocus = 'New year!';
             
             var sensor = new TimeSensor({
-                indicator: expectedIndicator,
-                title: expectedTitle,
+                focus: expectedFocus,
                 a: expectedADate,
-                b: expectedBDate,
-                units: expectedUnits
+                b: expectedBDate
             });
             
-            expect(sensor.indicator).toEqual(expectedIndicator);
-            expect(sensor.title).toEqual(expectedTitle);
+            expect(sensor.focus).toEqual(expectedFocus);
             expect(sensor.a).toEqual(expectedADate);
             expect(sensor.b).toEqual(expectedBDate);
-            expect(sensor.units).toEqual(expectedUnits);
         });
 
         it('initializes the tracker "max" to the milliseconds difference between a and b', function() {
@@ -51,11 +45,11 @@ describe('TimeSensor', function() {
 
     describe('#toJSON', function() {        
         it('returns a JSON representation of the sensor and the tracker it uses', function() {
-            var expectedTitle = 'New year!';
+            var expectedFocus = 'New year!';
             var expectedADate = new Date(2011, 11, 1);
             var expectedBDate = new Date(2012, 0, 1);
             var sensor = new TimeSensor({
-                title: expectedTitle,
+                focus: expectedFocus,
                 a: expectedADate,
                 b: expectedBDate
             });
@@ -65,7 +59,7 @@ describe('TimeSensor', function() {
             
             expect(sensor.toJSON()).toEqual({
                 params: {
-                    title: expectedTitle,
+                    focus: expectedFocus,
                     a: expectedADate,
                     b: expectedBDate
                 },

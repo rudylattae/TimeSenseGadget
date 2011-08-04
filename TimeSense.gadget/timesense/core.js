@@ -51,16 +51,42 @@ ProgressTracker.prototype.toJSON = function() {
 
 
 /**
+ * A TimeSlice defines two bounds (reference and focus) for a finite period.
+ */
+function TimeSlice(options) {
+    var options = options || {};
+    
+    this.reference = options.reference ? options.reference : null;
+    this.focus = options.focus ? options.focus : null;
+}
+TimeSlice.prototype.span = function() {
+    return this.focus - this.reference;
+}
+TimeSlice.prototype.elapsed = function() {
+    return Date.now() - this.reference;
+}
+TimeSlice.prototype.remaining = function() {
+    return this.focus - Date.now();
+}
+TimeSlice.prototype.toJSON = function() {
+    return {
+        reference: this.reference,
+        focus: this.focus,
+        span: this.span(),
+        elapsed: this.elapsed(),
+        remaining: this.remaining()
+    };
+}
+
+/**
  * A basic time sense provider.
  */
 function TimeSensor(options) {
     var options = options || {};
     
-    this.indicator = options.indicator ? options.indicator : 'texty';
-    this.title = options.title ? options.title : null;
+    this.focus = options.focus ? options.focus : null;
     this.a = options.a ? options.a : null;
     this.b = options.b ? options.b : null;
-    this.units = options.units ? options.units : 'days';
     
     var diff = _date(this.b).from(_date(this.a), true, true);
     this.tracker = new ProgressTracker({max: diff});
@@ -72,12 +98,25 @@ TimeSensor.prototype.tick = function() {
 TimeSensor.prototype.toJSON = function() {
     return {
         params: {
-            title: this.title,
+            focus: this.focus,
             a: this.a,
             b: this.b
         },
         tracker: this.tracker.toJSON()
     };
+}
+
+/**
+ * A view for a sensor
+ */
+function Indicator(options) {
+    var options = options || {};
+    
+    this.type = options.type ? options.type : 'texty';
+    this.sensor = options.sensor ? options.sensor : null;
+}
+Indicator.prototype.render = function(template) {
+    return template;
 }
 
 

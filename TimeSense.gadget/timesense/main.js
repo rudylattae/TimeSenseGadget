@@ -4,3 +4,4 @@ function $(id) {
     var id = id.substr(1, id.lenght);
     return document.getElementById(id);
 }
+
