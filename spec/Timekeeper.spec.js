@@ -77,7 +77,27 @@ describe('Timekeeper', function() {
                 
                 clock.tick();
                 
-                expect(tickHandler).toHaveBeenCalledWith(clock);
+                expect(tickHandler).toHaveBeenCalled();
+            });
+
+            it('calls the onTick handler with the object as the context (this)', function() {
+                var expectedTitle = 'Important event';
+                
+                var actualTitle = '';
+                var tickHandler = function() {
+                    actualTitle = this.title;
+                };
+                
+                var clock = new Timekeeper({
+                    title: expectedTitle,
+                    reference: new Date(2011, 11, 1),
+                    focus: new Date(2012, 0, 1),
+                    onTick: tickHandler
+                });
+                
+                clock.tick();
+                
+                expect(actualTitle).toEqual(expectedTitle);
             });
         });
     });

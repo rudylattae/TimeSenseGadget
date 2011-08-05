@@ -105,7 +105,7 @@ function Timekeeper(options) {
 Timekeeper.prototype.tick = function() {
     this.tracker.value(this.slice.remaining());
     if (this.onTick) {
-        this.onTick(this);
+        this.onTick.call(this);
     }
 }
 Timekeeper.prototype.start = function() {
