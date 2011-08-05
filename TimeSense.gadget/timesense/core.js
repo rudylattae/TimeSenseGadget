@@ -87,6 +87,7 @@ function Timekeeper(options) {
     
     this.title = options.title ? options.title : null;
     this.type = options.type ? options.type : null;
+    this.interval = options.interval ? options.interval : null;
     this.onTick = options.onTick ? options.onTick : null;
     
     if (options.reference && options.focus) {
@@ -107,6 +108,12 @@ Timekeeper.prototype.tick = function() {
         this.onTick(this);
     }
 }
+Timekeeper.prototype.start = function() {
+    var self = this;
+    this._timer = setInterval(function() {
+        self.tick();
+    }, this.interval);
+}
 Timekeeper.prototype.toJSON = function() {
     return {
         title: this.title,
@@ -114,6 +121,9 @@ Timekeeper.prototype.toJSON = function() {
         slice: this.slice.toJSON(),
         tracker: this.tracker.toJSON()
     };
+}
+Timekeeper.prototype.render = function(template) {
+    return tofu(template, this.toJSON());
 }
 
 
@@ -126,3 +136,6 @@ function t(s,d){
         s=s.replace(new RegExp('{'+p+'}','g'), d[p]);
     return s;
 }
+
+// https://gist.github.com/1075080
+function tofu(a,c){return a.replace(/{ *([^} ]+) *}/g,function(b,a){b=c;a.replace(/[^.]+/g,function(a){b=b[a]});return b})};
