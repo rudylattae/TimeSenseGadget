@@ -203,5 +203,38 @@ describe('Timekeeper', function() {
             
             expect(output).toEqual(expectedOutput);
         });
+        
+    });
+});
+
+describe('Timekeeper + viewModel generator', function() {
+
+    describe('when created', function() {
+        it('initializes with the given viewModel generator', function() {
+            var expectedTitle = 'New Year!';
+            var expectedViewModelGenerator = function () {}
+            
+            var clock = new Timekeeper({
+                viewModel: expectedViewModelGenerator
+            });
+            
+            expect(clock.viewModel).toBe(expectedViewModelGenerator);
+        });
+    });
+        
+    describe('#render', function() {
+        it('calls the viewModel generator', function() {
+            var viewModelGenerator = jasmine.createSpy();
+                
+            var clock = new Timekeeper({
+                reference: new Date(2011, 11, 1),
+                focus: new Date(2012, 0, 1),
+                viewModel: viewModelGenerator
+            });
+            
+            clock.render('');
+            
+            expect(viewModelGenerator).toHaveBeenCalled();
+        });
     });
 });

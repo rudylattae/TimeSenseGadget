@@ -89,6 +89,7 @@ function Timekeeper(options) {
     this.type = options.type ? options.type : null;
     this.interval = options.interval ? options.interval : null;
     this.onTick = options.onTick ? options.onTick : null;
+    this.viewModel = options.viewModel ? options.viewModel : null;
     
     if (options.reference && options.focus) {
         this.slice = new TimeSlice({
@@ -123,6 +124,9 @@ Timekeeper.prototype.toJSON = function() {
     };
 }
 Timekeeper.prototype.render = function(template) {
+    if (this.viewModel) {
+        this.viewModel.call(this);
+    }    
     return tofu(template, this.toJSON());
 }
 
