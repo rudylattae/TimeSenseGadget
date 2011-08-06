@@ -123,22 +123,4 @@ describe('ProgressTracker', function() {
             });
         });
     });
-        
-    describe('#render', function() {
-        var tracker;
-        
-        beforeEach(function() {
-            tracker = new ProgressTracker({
-                max: 30
-            });
-        });
-        
-        it('renders the view for the tracker given a template', function() {
-            tracker.percent(30);
-            
-            var output = tracker.render('I am at {percent}% of {max} which is {value}');
-            
-            expect(output).toBe('I am at 30% of 30 which is 9');
-        });
-    });
 });

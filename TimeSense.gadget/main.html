@@ -42,11 +42,31 @@
     </div>
 </script>
 <script type="text/javascript" src="lib/underscore.date.js"></script>
-<script type="text/javascript" src="core.js"></script>
-<script type="text/javascript" src="main.js"></script>
+<script type="text/javascript" src="zyx.js"></script>
+<script type="text/javascript" src="timesense/core.js"></script>
 <script type="text/javascript">
     var template = $('#texty-progress-indicator-html').innerHTML;
-    
+
+    var clock = new Timekeeper({
+        title: "Sneaky's arrival",
+        type: 'texty',
+        reference: new Date(2011, 7, 3),
+        focus: new Date(2011, 7, 20),
+        interval: 1000 * 60,
+        onTick: function() {
+            $('#content').html(this.render());
+        },
+        viewModel: function() {
+            var model = this.toJSON();
+            model.custom = "BOOM!";
+            return model;
+        }
+    });
+    $('#content').html(clock.render('{custom}'));
+    //clock.tick();
+    //clock.start();
+
+    /*
     var begin = 0;
     var end = 10;
     
@@ -104,6 +124,7 @@
     // main
     // =======
     tick();
+    */
     
 </script>
 </html>

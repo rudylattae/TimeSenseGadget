@@ -236,5 +236,30 @@ describe('Timekeeper + viewModel generator', function() {
             
             expect(viewModelGenerator).toHaveBeenCalled();
         });
+        
+        it('renders the given template with the json representaion provided by the viewModel generator', function() {
+            spyOn(Date, 'now').andReturn(new Date(2011, 11, 26));
+            
+            clock = new Timekeeper({
+                title: 'The new year',
+                type: 'pure-text',
+                reference: new Date(2011, 11, 25),
+                focus: new Date(2012, 0, 1),
+                viewModel: function() {
+                    return {
+                        title: this.title,
+                        friendlyReminder: '5 days away'
+                    };
+                }
+            });
+            
+            var expectedOutput = 'The new year is 5 days away!';
+            
+            var template = '{title} is {friendlyReminder}!';
+            
+            var output = clock.render(template);
+            
+            expect(output).toEqual(expectedOutput);
+        });
     });
 });

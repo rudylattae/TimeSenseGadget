@@ -37,9 +37,6 @@ ProgressTracker.prototype.percent = function(percentage) {
         return Math.ceil((this.value()/this.max) * 100);
     }
 }
-ProgressTracker.prototype.render = function(template) {
-    return t(template, this.toJSON());
-}
 ProgressTracker.prototype.toJSON = function() {
     return {
         min: this.min,
@@ -124,22 +121,12 @@ Timekeeper.prototype.toJSON = function() {
     };
 }
 Timekeeper.prototype.render = function(template) {
+    var json = {};
+    
     if (this.viewModel) {
-        this.viewModel.call(this);
-    }    
-    return tofu(template, this.toJSON());
+        json = this.viewModel.call(this);
+    } else {
+        json = this.toJSON();
+    }
+    return tofu(template, json);
 }
-
-
-// util
-// ======
-
-// http://mir.aculo.us/2011/03/09/little-helpers-a-tweet-sized-javascript-templating-engine/
-function t(s,d){
-    for(var p in d)
-        s=s.replace(new RegExp('{'+p+'}','g'), d[p]);
-    return s;
-}
-
-// https://gist.github.com/1075080
-function tofu(a,c){return a.replace(/{ *([^} ]+) *}/g,function(b,a){b=c;a.replace(/[^.]+/g,function(a){b=b[a]});return b})};
