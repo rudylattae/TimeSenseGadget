@@ -14,9 +14,9 @@
         #content {
             margin: 0.25em; }
             
-        .texty-indicator {
+        .texty-timekeeper {
             border: #fff }
-            .texty-indicator .progress {
+            .texty-timekeeper .indicator {
                 font-family: Arial;
                 letter-spacing: 1px;
                 color: green;
@@ -25,106 +25,60 @@
                 padding-bottom: 0.1em;
                 margin-bottom: 0.25em;
                 border-bottom: 1px solid #555; }
-            .texty-indicator .info {
+            .texty-timekeeper .info {
                 font-size: 0.8em;
                 padding-top: 0.35em; }
     </style>
 </head>
 <body>
-    <div id="content" class="small">
-
-    </div>
+    <div id="content"></div>
 </body>
-<script type="text/html" id="texty-progress-indicator-html">
-    <div class="{type}-indicator">
-        <div class="progress {progress}">{display}</div>
-        <div class="info">{count} {units} to {target}</div>
+<script type="text/html" id="texty-timekeeper-html">
+    <div class="{type}-timekeeper">
+        <div class="indicator {tracker.percent}">{progress}</div>
+        <div class="info">{friendlyReminder} {title}</div>
     </div>
 </script>
 <script type="text/javascript" src="lib/underscore.date.js"></script>
-<script type="text/javascript" src="zyx.js"></script>
-<script type="text/javascript" src="timesense/core.js"></script>
+<script type="text/javascript" src="lib/zyx.js"></script>
+<script type="text/javascript" src="timesense.js"></script>
 <script type="text/javascript">
-    var template = $('#texty-progress-indicator-html').innerHTML;
+    var template = $('#texty-timekeeper-html').html();
+    
+    _date.relativeTime.future = "%s to";
+    _date.relativeTime.past = "%s since";
+    
+    function getTextyProgress(percent) {
+        var marker = '|';
+        var maxMarkers = 30;
 
+        var limit = (percent / 100) * maxMarkers;
+        var progress = '';
+        for (i=1; i<=limit; i++) {
+            progress += marker;
+        }
+        return progress;
+    }
+    
     var clock = new Timekeeper({
-        title: "Sneaky's arrival",
+        title: "Major event!",
         type: 'texty',
         reference: new Date(2011, 7, 3),
         focus: new Date(2011, 7, 20),
         interval: 1000 * 60,
         onTick: function() {
-            $('#content').html(this.render());
+            $('#content').html(this.render(template));
         },
         viewModel: function() {
             var model = this.toJSON();
-            model.custom = "BOOM!";
+            var progress = getTextyProgress(model.tracker.percent);
+            model.progress = progress == '' ? '&nbsp;' : progress;
+            model.friendlyReminder = _date(model.slice.focus).from(Date.now());
             return model;
         }
     });
-    $('#content').html(clock.render('{custom}'));
-    //clock.tick();
-    //clock.start();
-
-    /*
-    var begin = 0;
-    var end = 10;
-    
-    var count = 0;
-    var interval = 1000 * 60 * 60 * 24;
-    
-    var marker = '|';
-    var maxMarkers = 30;
-    
-    var indicator = {
-        type: 'texty',
-        progress: getProgress(),
-        display: getDisplay(),
-        count: count,
-        units: 'days',
-        target: 'Target event'
-    };
-    
-    var timer;
-    
-    timer = setInterval(function() {
-        tick();
-    }, interval );
-    
-    function tick() {
-        count += 1;
-        
-        indicator.count = count;
-        indicator.progress = getProgress();
-        indicator.display = getDisplay();
-        
-        $('#content').innerHTML = t(template, indicator);
-        
-        if (count === end) {
-            clearInterval(timer);
-        }
-    }
-    
-    function getProgress() {
-        return (count/ end) * 100;
-    }
-    
-    function getDisplay() {
-        var progress = getProgress();
-        var limit = (progress / 100) * maxMarkers;
-        var display = '';
-        for (i=1; i<=limit; i++) {
-            display += marker;
-        }
-        return display;
-    }
-    
-      
-    
-    // main
-    // =======
-    tick();
-    */
+    clock.tick();
+    clock.start();
     
 </script>
 </html>

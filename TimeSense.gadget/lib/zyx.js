@@ -61,18 +61,34 @@ var NodeHelpers = {
     }
 };
 
+if (typeof NodeList === 'undefined') {
+     function NodeList(el) {
+        this['0'] = el;
+        this.length = 1;
+    }
+    NodeList.prototype.item = function() {};
+}
 
 /**
  * Builds and returns a selector engine which augments the found node list with the given helpers
  * - https://gist.github.com/991057
  */
-var q = function(doc, helpers) {
-    var sel = doc.querySelectorAll ? 
-        function(a,b) { return doc.querySelectorAll(a,b); } : 
-        function(a,b){a=a.match(/^(\W)?(.*)/);return(b||document)["getElement"+(b=a[1]?b=="#"?"ById":"sByClassName":"sByTagName")](a[2])}
+var q = function(document, helpers) {
+    var sel = document.querySelectorAll ? 
+        function(a,b) { return document.querySelectorAll(a,b); } : 
+        function(a,b){a=a.match(/^(\W)?(.*)/);return(b||document)["getElement"+(a[1]=="#"?"ById":a[1]=='.'?"sByClassName":"sByTagName")](a[2])};
+    
+    function isNodeList(el) {
+        if (typeof el.length === 'number' && typeof el.item !== 'undefined')
+        {
+            return true;
+        } 
+        return false;
+    }
     
     return function(selector, context) {
         var nodes = sel(selector, context);
+        if (!isNodeList(nodes)) { nodes = new NodeList(nodes); }
         if (typeof helpers !== 'undefined') {
             for (helper in helpers) {
                 nodes[helper] = helpers[helper];
