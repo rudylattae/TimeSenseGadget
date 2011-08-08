@@ -61,6 +61,9 @@ var NodeHelpers = {
     }
 };
 
+/**
+ * NodeList polyfill for browsers without
+ */
 if (typeof NodeList === 'undefined') {
      function NodeList(el) {
         this['0'] = el;
@@ -70,8 +73,10 @@ if (typeof NodeList === 'undefined') {
 }
 
 /**
- * Builds and returns a selector engine which augments the found node list with the given helpers
- * - https://gist.github.com/991057
+ * Builds and returns a selector engine using either document.querySelectorAll or 
+ * cssSelect https://gist.github.com/991057
+ * If a helpers module is provided, the selector engine augments the matching NodeList
+ * with the functions in the helper module
  */
 var q = function(document, helpers) {
     var sel = document.querySelectorAll ? 
