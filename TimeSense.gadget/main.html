@@ -6,13 +6,15 @@
         body {
             margin: 0;
             width: 130px;
-            height: 75px;
+            height: 90px;
             background-color: #333;
             font-size: 1em;
-            overflow: auto;
+            overflow: hidden;
             color: #ccc; }
         #content {
-            margin: 0.25em; }
+            margin: 0;
+            padding: 0.2em;
+            border: 1px solid #eee }
             
         .texty-timekeeper {
             border: #fff }
@@ -23,11 +25,21 @@
                 background-color: #000;
                 padding-left: 0.05em;
                 padding-bottom: 0.1em;
-                margin-bottom: 0.25em;
+                margin-bottom: 0.1em;
                 border-bottom: 1px solid #555; }
+                
             .texty-timekeeper .info {
-                font-size: 0.8em;
-                padding-top: 0.35em; }
+                font-family: Tahoma;
+                font-size: 0.9em;
+                padding-top: 0.1em; }
+                .texty-timekeeper .info .nag {
+                    font-size: 90%;
+                    margin-top: 0.25em;
+                    margin-bottom: 0.3em }
+                .texty-timekeeper .info .date {
+                    height: 35px }
+                .texty-timekeeper .info .event {
+                    height: 35px }
     </style>
 </head>
 <body>
@@ -36,7 +48,11 @@
 <script type="text/html" id="texty-timekeeper-html">
     <div class="{type}-timekeeper">
         <div class="indicator {tracker.percent}">{progress}</div>
-        <div class="info">{friendlyReminder} {title}</div>
+        <div class="info">
+            <div class="nag">{nag}</div>
+            <!--<div class="date">{date}</div>-->
+            <div class="event">{title}</div>
+        </div>
     </div>
 </script>
 <script type="text/javascript" src="lib/underscore.date.js"></script>
@@ -61,10 +77,10 @@
     }
     
     var clock = new Timekeeper({
-        title: "Major event!",
+        title: "The New Year!",
         type: 'texty',
-        reference: new Date(2011, 7, 3),
-        focus: new Date(2011, 7, 20),
+        reference: new Date(2011, 6, 1),
+        focus: new Date(2012, 0, 1),
         interval: 1000 * 60,
         onTick: function() {
             $('#content').html(this.render(template));
@@ -73,7 +89,8 @@
             var model = this.toJSON();
             var progress = getTextyProgress(model.tracker.percent);
             model.progress = progress == '' ? '&nbsp;' : progress;
-            model.friendlyReminder = _date(model.slice.focus).from(Date.now());
+            model.nag = _date(model.slice.focus).from(Date.now());
+            model.date = _date(model.slice.focus).format("ddd, MMM Do YYYY h:mm:ss a"); 
             return model;
         }
     });
