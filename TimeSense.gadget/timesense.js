@@ -82,7 +82,7 @@ TimeSlice.prototype.toJSON = function() {
 function Timekeeper(options) {
     var options = options || {};
     
-    this.title = options.title ? options.title : null;
+    this.event = options.event ? options.event : null;
     this.type = options.type ? options.type : null;
     this.interval = options.interval ? options.interval : null;
     this.onTick = options.onTick ? options.onTick : null;
@@ -114,7 +114,7 @@ Timekeeper.prototype.start = function() {
 }
 Timekeeper.prototype.toJSON = function() {
     return {
-        title: this.title,
+        event: this.event,
         type: this.type,
         slice: this.slice.toJSON(),
         tracker: this.tracker.toJSON()

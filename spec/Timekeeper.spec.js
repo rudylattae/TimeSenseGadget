@@ -1,19 +1,19 @@
 describe('Timekeeper', function() {
     describe('when created', function() {
-        it('initializes with the given title, type, interval and onTick handler', function() {
-            var expectedTitle = 'New Year!';
+        it('initializes with the given event, type, interval and onTick handler', function() {
+            var expectedEvent = 'New Year!';
             var expectedType = 'texty';
             var expectedInterval = 1000 * 60;
             var expectedTickHandler = function () {}
             
             var clock = new Timekeeper({
-                title: expectedTitle,
+                event: expectedEvent,
                 type: expectedType,
                 interval: expectedInterval,
                 onTick: expectedTickHandler
             });
             
-            expect(clock.title).toEqual(expectedTitle);
+            expect(clock.event).toEqual(expectedEvent);
             expect(clock.type).toEqual(expectedType);
             expect(clock.interval).toBe(expectedInterval);
             expect(clock.onTick).toBe(expectedTickHandler);
@@ -81,15 +81,15 @@ describe('Timekeeper', function() {
             });
 
             it('calls the onTick handler with the object as the context (this)', function() {
-                var expectedTitle = 'Important event';
+                var expectedEvent = 'Important event';
                 
-                var actualTitle = '';
+                var actualEvent = '';
                 var tickHandler = function() {
-                    actualTitle = this.title;
+                    actualEvent = this.event;
                 };
                 
                 var clock = new Timekeeper({
-                    title: expectedTitle,
+                    event: expectedEvent,
                     reference: new Date(2011, 11, 1),
                     focus: new Date(2012, 0, 1),
                     onTick: tickHandler
@@ -97,7 +97,7 @@ describe('Timekeeper', function() {
                 
                 clock.tick();
                 
-                expect(actualTitle).toEqual(expectedTitle);
+                expect(actualEvent).toEqual(expectedEvent);
             });
         });
     });
@@ -128,20 +128,20 @@ describe('Timekeeper', function() {
         it('returns a JSON representation of the clock and its sub-components', function() {
             spyOn(Date, 'now').andReturn(new Date(2011, 11, 26));
             
-            var expectedTitle = 'New Year!';
+            var expectedEvent = 'New Year!';
             var expectedType = 'texty';
             var expectedReference = new Date(2011, 11, 1);
             var expectedFocus = new Date(2012, 0, 1);
 
             var clock = new Timekeeper({
-                title: expectedTitle,
+                event: expectedEvent,
                 type: expectedType,
                 reference: expectedReference,
                 focus: expectedFocus
             });
             
             expect(clock.toJSON()).toEqual({
-                title: expectedTitle,
+                event: expectedEvent,
                 type: expectedType,
                 slice: {
                     reference: expectedReference,
@@ -169,7 +169,7 @@ describe('Timekeeper', function() {
             spyOn(Date, 'now').andReturn(new Date(2011, 11, 26));
             
             clock = new Timekeeper({
-                title: 'An event',
+                event: 'An event',
                 type: 'pure-text',
                 reference: reference,
                 focus: focus
@@ -177,7 +177,7 @@ describe('Timekeeper', function() {
         });
         
         it('renders the given template with json representaion of the timer', function() {
-            var output = clock.render('This is "{title}" as {type}');
+            var output = clock.render('This is "{event}" as {type}');
             
             expect(output).toEqual('This is "An event" as pure-text');
         });
@@ -211,7 +211,7 @@ describe('Timekeeper + viewModel generator', function() {
 
     describe('when created', function() {
         it('initializes with the given viewModel generator', function() {
-            var expectedTitle = 'New Year!';
+            var expectedEvent = 'New Year!';
             var expectedViewModelGenerator = function () {}
             
             var clock = new Timekeeper({
@@ -241,13 +241,13 @@ describe('Timekeeper + viewModel generator', function() {
             spyOn(Date, 'now').andReturn(new Date(2011, 11, 26));
             
             clock = new Timekeeper({
-                title: 'The new year',
+                event: 'The new year',
                 type: 'pure-text',
                 reference: new Date(2011, 11, 25),
                 focus: new Date(2012, 0, 1),
                 viewModel: function() {
                     return {
-                        title: this.title,
+                        event: this.event,
                         friendlyReminder: '5 days away'
                     };
                 }
@@ -255,7 +255,7 @@ describe('Timekeeper + viewModel generator', function() {
             
             var expectedOutput = 'The new year is 5 days away!';
             
-            var template = '{title} is {friendlyReminder}!';
+            var template = '{event} is {friendlyReminder}!';
             
             var output = clock.render(template);
             
