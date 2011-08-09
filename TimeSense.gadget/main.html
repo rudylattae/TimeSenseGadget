@@ -7,14 +7,14 @@
             margin: 0;
             width: 130px;
             height: 90px;
-            background-color: #333;
+            background-color: #222;
             font-size: 1em;
             overflow: hidden;
-            color: #ccc; }
+            color: #aaa; }
         #content {
             margin: 0;
             padding: 0.2em;
-            border: 1px solid #eee }
+            border: 1px solid #777 }
             
         .texty-timekeeper {
             border: #fff }
@@ -32,6 +32,8 @@
                 font-family: Tahoma;
                 font-size: 0.9em;
                 padding-top: 0.1em; }
+                .texty-timekeeper .info:hover {
+                    color: #eee }
                 .texty-timekeeper .info .nag {
                     font-size: 90%;
                     margin-top: 0.25em;
@@ -48,7 +50,7 @@
 <script type="text/html" id="texty-timekeeper-html">
     <div class="{type}-timekeeper">
         <div class="indicator {tracker.percent}">{progress}</div>
-        <div class="info">
+        <div id="flip" class="info">
             <div class="nag">{nag}</div>
             <!--<div class="date">{date}</div>-->
             <div class="event">{event}</div>
@@ -97,5 +99,8 @@
     clock.tick();
     clock.start();
     
+    $('#flip').bind('click', function() {
+        $('#content').html('FLIP!');
+    });
 </script>
 </html>
