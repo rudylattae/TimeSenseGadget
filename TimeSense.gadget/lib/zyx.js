@@ -39,7 +39,11 @@ var NodeHelpers = {
         
         if (typeof type !== 'undefined' && typeof listener !== 'undefined') {
             for (var i=0; i<this.length; i++) {
-                this[i].addEventListener(type, listener, capture);
+                if (this[i].addEventListener) {
+                    this[i].addEventListener(type, listener, capture);
+                } else if (this[i].attachEvent) {
+                    this[i].attachEvent('on' + type, listener);
+                }
             }
         }
     },
