@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <gadget>
-    <name>Time Sense</name>
+    <name>Time Sense (dev)</name>
     <description>Visual indicator for the passage of time.</description>
-    <version>0.1.1</version>
+    <version>0.2.1</version>
     <author name="Rudy L.">
         <info url="rudyl.com" />
     </author>
