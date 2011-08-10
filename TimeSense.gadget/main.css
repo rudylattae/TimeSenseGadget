@@ -1,0 +1,65 @@
+body {
+    margin: 0;
+    width: 130px;
+    height: 90px;
+    background-color: #222;
+    font-size: 1em;
+    overflow: hidden;
+    color: #aaa; }
+    
+a, a:hover, a:visited, a:focus {
+    outline: 0 none; }
+a:focus {
+    outline: 1px solid lime}
+
+#content {
+    margin: 0;
+    padding: 0.2em;
+    border: 1px solid #777 }
+    
+.texty-timekeeper {
+    border: #fff }
+    
+    .texty-timekeeper .indicator {
+        font-family: Arial;
+        letter-spacing: 1px;
+        color: #777;
+        background-color: #000;
+        padding-left: 0.05em;
+        padding-bottom: 0.1em;
+        margin-bottom: 0.1em;
+        border-bottom: 1px solid #555; }
+        
+        .texty-timekeeper .indicator.max {
+            color: #33cc33 }
+        .texty-timekeeper .indicator.high {
+            color: #669900 }
+        .texty-timekeeper .indicator.mid {
+            color: #ff9933 }
+        .texty-timekeeper .indicator.low {
+            color: #cc0000 }
+        .texty-timekeeper .indicator.empty {
+            color: #ccc }
+        
+    .texty-timekeeper .info {
+        font-family: Tahoma;
+        font-size: 0.9em;
+        padding-top: 0.1em; }
+        
+        .texty-timekeeper .info .nag {
+            font-size: 90%;
+            margin-top: 0.25em;
+            margin-bottom: 0.3em }
+        .texty-timekeeper .info .date {
+            height: 35px;
+            display: none }
+        .texty-timekeeper .info .event {
+            height: 35px }
+        .texty-timekeeper .info .date a,
+        .texty-timekeeper .info .event a {
+            color: #aaa;
+            text-decoration: none;
+            cursor: default }
+        .texty-timekeeper .info .date a:hover,
+        .texty-timekeeper .info .event a:hover {
+            color: #eee }
