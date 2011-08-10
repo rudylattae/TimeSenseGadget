@@ -1,0 +1,27 @@
+The dev-cycle automation could be improved by making the install script 
+a bit more flexible... Could even become reusable.
+
+1. rename install.cmd to gadget.cmd
+
+2. provide commands 
+
+- during the dev cycle...
+
+> gadget build TimeSense dev
+> gadget install TimeSense dev
+
+OR
+
+> gadget boom TimeSense dev
+
+"boom" command does build and install
+
+
+When ready to ship
+
+> gadget package TimeSense
+
+"package" does build before
+
+
+3. Should read project config from file so I don't have to type it for all commands?

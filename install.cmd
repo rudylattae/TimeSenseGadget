@@ -2,6 +2,12 @@
 setlocal
 :: Simple development and build automation
 
+echo %1
+echo %2
+
+endlocal
+goto :eof
+
 set gadget_name=TimeSense
 set version=dev
 set package_name=TimeSense-%version%
