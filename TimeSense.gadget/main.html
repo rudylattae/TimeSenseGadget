@@ -11,6 +11,12 @@
             font-size: 1em;
             overflow: hidden;
             color: #aaa; }
+            
+        a, a:hover, a:visited, a:focus {
+            outline: 0 none; }
+        a:focus {
+            outline: 1px solid lime}
+        
         #content {
             margin: 0;
             padding: 0.2em;
@@ -18,30 +24,50 @@
             
         .texty-timekeeper {
             border: #fff }
+            
             .texty-timekeeper .indicator {
                 font-family: Arial;
                 letter-spacing: 1px;
-                color: green;
+                color: #777;
                 background-color: #000;
                 padding-left: 0.05em;
                 padding-bottom: 0.1em;
                 margin-bottom: 0.1em;
                 border-bottom: 1px solid #555; }
                 
+                .texty-timekeeper .indicator.max {
+                    color: #33cc33 }
+                .texty-timekeeper .indicator.high {
+                    color: #669900 }
+                .texty-timekeeper .indicator.mid {
+                    color: #ff9933 }
+                .texty-timekeeper .indicator.low {
+                    color: #cc0000 }
+                .texty-timekeeper .indicator.empty {
+                    color: #ccc }
+                
             .texty-timekeeper .info {
                 font-family: Tahoma;
                 font-size: 0.9em;
                 padding-top: 0.1em; }
-                .texty-timekeeper .info:hover {
-                    color: #eee }
+                
                 .texty-timekeeper .info .nag {
                     font-size: 90%;
                     margin-top: 0.25em;
                     margin-bottom: 0.3em }
                 .texty-timekeeper .info .date {
-                    height: 35px }
+                    height: 35px;
+                    display: none }
                 .texty-timekeeper .info .event {
                     height: 35px }
+                .texty-timekeeper .info .date a,
+                .texty-timekeeper .info .event a {
+                    color: #aaa;
+                    text-decoration: none;
+                    cursor: default }
+                .texty-timekeeper .info .date a:hover,
+                .texty-timekeeper .info .event a:hover {
+                    color: #eee }
     </style>
 </head>
 <body>
@@ -49,11 +75,11 @@
 </body>
 <script type="text/html" id="texty-timekeeper-html">
     <div class="{type}-timekeeper">
-        <div class="indicator {tracker.percent}">{progress}</div>
-        <div id="flip" class="info">
+        <div class="indicator {hint} {tracker.percent}">{progress}</div>
+        <div class="info">
             <div class="nag">{nag}</div>
-            <!--<div class="date">{date}</div>-->
-            <div class="event">{event}</div>
+            <div class="date" title="Click to show event"><a id="show-event" href="">{date}</a></div>
+            <div class="event" title="Click to show date"><a id="show-date" href="">{event}</a></div>
         </div>
     </div>
 </script>
@@ -78,6 +104,24 @@
         return progress;
     }
     
+    function getHint(percent) {
+        if (percent = 100) {
+            return 'max';
+        }
+        if (percent >= 60 && percent <= 99) {
+            return 'high';
+        }
+        if (percent >= 30 && percent <= 59) {
+            return 'mid';
+        }
+        if (percent >= 1 && percent <= 29) {
+            return 'low';
+        }
+        if (percent = 0) {
+            return 'empty';
+        }
+    }
+    
     var clock = new Timekeeper({
         event: "The New Year!",
         type: 'texty',
@@ -91,6 +135,7 @@
             var model = this.toJSON();
             var progress = getTextyProgress(model.tracker.percent);
             model.progress = progress == '' ? '&nbsp;' : progress;
+            model.hint = getHint(model.tracker.percent);
             model.nag = _date(model.slice.focus).from(Date.now());
             model.date = _date(model.slice.focus).format("ddd, MMM Do YYYY h:mm:ss a"); 
             return model;
@@ -99,8 +144,19 @@
     clock.tick();
     clock.start();
     
-    $('#flip').bind('click', function() {
-        $('#content').html('FLIP!');
-    });
+    document.onclick = function(e) {
+        if (window.event.srcElement.id === 'show-date') {
+            $('.date').show();
+            $('.event').hide();
+            window.event.returnValue = false;
+            return false;
+        }
+        if (window.event.srcElement.id === 'show-event') {
+            $('.event').show();
+            $('.date').hide();
+            window.event.returnValue = false;
+            return false;
+        }
+    };
 </script>
 </html>

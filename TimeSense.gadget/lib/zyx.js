@@ -62,6 +62,20 @@ var NodeHelpers = {
             }
             return all;
         }
+    },
+    
+    hide: function() {
+        if (this.length === 0) return;
+        for (var i=0; i<this.length; i++) {
+            this[i].style.display = 'none';
+        }
+    },
+    
+    show: function() {
+        if (this.length === 0) return;
+        for (var i=0; i<this.length; i++) {
+            this[i].style.display = 'block';
+        }
     }
 };
 
@@ -69,11 +83,40 @@ var NodeHelpers = {
  * NodeList polyfill for browsers without
  */
 if (typeof NodeList === 'undefined') {
-     function NodeList(el) {
-        this['0'] = el;
-        this.length = 1;
+    function NodeList(el) {
+        if (el instanceof Array) {
+            for (var i=0, len=el.length; i<len; i++) {
+                this[i] = el[i];
+            }
+            this.length = el.length;
+        } else {
+            this['0'] = el;
+            this.length = 1;
+        }
     }
     NodeList.prototype.item = function() {};
+}
+
+
+/**
+ * Polyfill for document.getElementsByClassName
+ */
+document.getElementsByClassName = document.getElementsByClassName || function (searchClass,node,tag) {
+  var classElements = new Array();
+  if ( node == null )
+    node = document;
+  if ( tag == null )
+    tag = '*';
+  var els = node.getElementsByTagName(tag);
+  var elsLen = els.length;
+  var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
+  for (i = 0, j = 0; i < elsLen; i++) {
+    if ( pattern.test(els[i].className) ) {
+      classElements[j] = els[i];
+      j++;
+    }
+  }
+  return classElements;
 }
 
 /**
@@ -85,7 +128,7 @@ if (typeof NodeList === 'undefined') {
 var q = function(document, helpers) {
     var sel = document.querySelectorAll ? 
         function(a,b) { return document.querySelectorAll(a,b); } : 
-        function(a,b){a=a.match(/^(\W)?(.*)/);return(b||document)["getElement"+(a[1]=="#"?"ById":a[1]=='.'?"sByClassName":"sByTagName")](a[2])};
+        function(a,b){a=a.match(/^(\W)?(.*)/);return(b||document)["getElement"+(a[1]?a[1]=="#"?"ById":"sByClassName":"sByTagName")](a[2])};
     
     function isNodeList(el) {
         if (typeof el.length === 'number' && typeof el.item !== 'undefined')
