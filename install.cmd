@@ -1,10 +1,14 @@
+:: Simple development and build automation
 @echo off
 setlocal
-:: Simple development and build automation
 
-set gadget_name=TimeSense
-set version=dev
-set package_name=TimeSense-%version%
+set default_gadget_name=TimeSense
+set default_gadget_version=dev
+
+if not "%1"=="" (set "gadget_name=%1") else (set gadget_name=%default_gadget_name%)
+if not "%2"=="" (set "gadget_version=%2") else (set gadget_version=%default_gadget_version%)
+
+set package_name=%gadget_name%-%gadget_version%
 set source_dir=%~p0%gadget_name%.gadget
 set build_dir=%~p0build\%package_name%.gadget
 set install_dir=%LOCALAPPDATA%\Microsoft\Windows Sidebar\Gadgets\%package_name%.gadget
