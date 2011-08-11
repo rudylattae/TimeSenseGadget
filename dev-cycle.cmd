@@ -16,7 +16,7 @@ echo and I'll auto-install the gadget when you make changes to
 echo %watch_files% types of files
 echo.
 
-watchmedo shell-command --patterns=%watch_files% --recursive --command=install
+watchmedo shell-command --patterns=%watch_files% --ignore-patterns="*build*" --recursive --command=install
 echo.
 
 endlocal

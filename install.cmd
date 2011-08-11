@@ -49,7 +49,7 @@ if not exist "%install_dir%" (
 echo.
 echo installing...
 echo.
-xcopy /E "%source_dir%\*.*" "%install_dir%"
+xcopy /E "%build_dir%\*.*" "%install_dir%"
 
 
 echo.
