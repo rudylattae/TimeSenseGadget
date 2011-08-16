@@ -52,24 +52,6 @@
         return progress;
     }
     
-    function getHint(percent) {
-        if (percent === 100) {
-            return 'max';
-        }
-        if (percent >= 60 && percent <= 99) {
-            return 'high';
-        }
-        if (percent >= 30 && percent <= 59) {
-            return 'mid';
-        }
-        if (percent >= 1 && percent <= 29) {
-            return 'low';
-        }
-        if (percent === 0) {
-            return 'empty';
-        }
-    }
-    
     var clock = new Timekeeper({
         event: "New Year 2012!",
         type: 'texty',

@@ -142,11 +142,30 @@ function TextyTimekeeper(options) {
 }
 
 TextyTimekeeper.prototype = new Timekeeper;
+
 TextyTimekeeper.prototype.constructor = TextyTimekeeper;
 
 TextyTimekeeper.prototype.onTick = function() {
 
 }
+
 TextyTimekeeper.prototype.viewModel = function() {
 
 }
+
+TextyTimekeeper.prototype.getHint = function() {
+}
+
+
+/**
+ * Timekeeper related utils
+ */
+var util = {
+    hintForValue: function(percent) {
+        if (percent === 100) { return 'full'; }
+        if (percent >= 60 && percent <= 99) { return 'high'; }
+        if (percent >= 30 && percent <= 59) { return 'mid'; }
+        if (percent >= 1 && percent <= 29) { return 'low'; }
+        if (percent === 0) { return 'empty'; }
+    }
+};
