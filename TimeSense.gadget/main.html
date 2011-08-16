@@ -10,6 +10,8 @@
 <script type="text/html" id="texty-timekeeper-html">
     <div class="{type}-timekeeper">
         <div class="indicator {hint} {tracker.percent}">{progress}</div>
+        <div class="scale clearfix"><span class="empty">{scale.empty}</span><span class="max">{scale.max}</span></div>
+        <div class="clear"></div>
         <div class="info">
             <div class="nag">{nag}</div>
             <div class="date" title="Click to show event"><a id="show-event" href="">{date}</a></div>
@@ -19,16 +21,27 @@
 </script>
 <script type="text/javascript" src="lib/underscore.date.js"></script>
 <script type="text/javascript" src="lib/zyx.js"></script>
+<script type="text/javascript" src="core.js"></script>
 <script type="text/javascript" src="timesense.js"></script>
 <script type="text/javascript">
     var template = $('#texty-timekeeper-html').html();
     
     _date.relativeTime.future = "%s to";
     _date.relativeTime.past = "%s since";
-    
+   
+    System.Gadget.settingsUI = 'settings.html'; 
+    System.Gadget.onSettingsClosed = settingsClosed;
+
+        
+    function settingsClosed(e) {
+        if (e.closeAction === e.Action.commit) {
+            customize();
+        }
+    }
+
     function getTextyProgress(percent) {
         var marker = '|';
-        var maxMarkers = 30;
+        var maxMarkers = 36;
 
         var limit = (percent / 100) * maxMarkers;
         var progress = '';
@@ -40,7 +53,7 @@
     }
     
     function getHint(percent) {
-        if (percent = 100) {
+        if (percent === 100) {
             return 'max';
         }
         if (percent >= 60 && percent <= 99) {
@@ -52,13 +65,13 @@
         if (percent >= 1 && percent <= 29) {
             return 'low';
         }
-        if (percent = 0) {
+        if (percent === 0) {
             return 'empty';
         }
     }
     
     var clock = new Timekeeper({
-        event: "The New Year!",
+        event: "New Year 2012!",
         type: 'texty',
         reference: new Date(2011, 6, 1),
         focus: new Date(2012, 0, 1),
@@ -73,6 +86,10 @@
             model.hint = getHint(model.tracker.percent);
             model.nag = _date(model.slice.focus).from(Date.now());
             model.date = _date(model.slice.focus).format("ddd, MMM Do YYYY h:mm:ss a"); 
+            model.scale = { 
+                empty: 0,
+                max: _date(model.slice.focus).from(_date(model.slice.reference), true)
+            };
             return model;
         }
     });
@@ -93,5 +110,12 @@
             return false;
         }
     };
+    
+    
+    
+    function customize() {
+        config.load();        
+        $('.date').html(config.values.what);
+    }
 </script>
 </html>

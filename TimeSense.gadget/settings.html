@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=Unicode" />
+    <style>
+        body {
+            margin: 0;
+            width: 250px;
+            height: 300px; }
+            
+        #wrapper {
+            margin: 0.5em; }
+        
+        .field { 
+            margin: 0.25em 0; }
+            .field input { width: 90%; }
+    </style>
+    
+    <script type="text/javascript" src="lib/underscore.date.js"></script>
+    <script type="text/javascript" src="lib/zyx.js"></script>
+    <script type="text/javascript" src="core.js"></script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div class="field"><label for="what">What</label><input type="textbox" id="what" /></div>
+        <div class="field"><label for="what">When</label><input type="textbox" id="when" /></div>
+    </div>
+</body>
+
+<script type="text/javascript">
+
+    // settings
+    // ===========
+    function init() {
+        System.Gadget.onSettingsClosing = settingsClosing;
+        displayUserSettings();
+    }
+    
+    function displayUserSettings() {
+        config.load();
+        $('#what').val(config.values.what);
+        $('#when').val(config.values.when);
+    }
+    
+    function settingsClosing(e) {
+        if (e.closeAction === e.Action.commit) {
+            saveSettings();
+        }
+    }
+    
+    function saveSettings() {
+        config.values.what = $('#what').val();
+        config.values.when = $('#when').val();
+        config.save();
+    }    
+
+    // main
+    // =======
+    init();
+</script>
+
+</html>

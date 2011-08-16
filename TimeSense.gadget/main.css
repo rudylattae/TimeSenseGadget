@@ -1,7 +1,7 @@
 body {
     margin: 0;
     width: 130px;
-    height: 90px;
+    height: 94px;
     background-color: #222;
     font-size: 1em;
     overflow: hidden;
@@ -11,6 +11,28 @@ a, a:hover, a:visited, a:focus {
     outline: 0 none; }
 a:focus {
     outline: 1px solid lime}
+
+.clearfix {
+    display:inline-block; }
+    .clearfix:after, .container:after {
+        clear:both;
+        content:".";
+        display:block;
+        height:0;
+        visibility:hidden; }
+    * html .clearfix {
+        height:1%; }
+    .clearfix {
+        display:block; }
+.clear {
+    clear:both;
+    height:0;
+    width:0;
+    margin:0;
+    padding:0;
+    line-height:0;
+    overflow: hidden;
+    font-size:0px; }
 
 #content {
     margin: 0;
@@ -22,13 +44,13 @@ a:focus {
     
     .texty-timekeeper .indicator {
         font-family: Arial;
-        letter-spacing: 1px;
         color: #777;
         background-color: #000;
-        padding-left: 0.05em;
-        padding-bottom: 0.1em;
+        margin-left: 4%;
+        width: 90%;
+        padding: 0;
         margin-bottom: 0.1em;
-        border-bottom: 1px solid #555; }
+        border: 1px solid #555; }
         
         .texty-timekeeper .indicator.max {
             color: #33cc33 }
@@ -40,16 +62,26 @@ a:focus {
             color: #cc0000 }
         .texty-timekeeper .indicator.empty {
             color: #ccc }
+            
+    .texty-timekeeper .scale {
+        font-size: 0.65em;
+        color: #777;
+        clear: both }
+        .texty-timekeeper .scale span {
+            display: inline-block }
+        .texty-timekeeper .scale .max {
+            float: right }
+        .texty-timekeeper .scale .empty {
+            float: left }
         
     .texty-timekeeper .info {
         font-family: Tahoma;
-        font-size: 0.9em;
-        padding-top: 0.1em; }
+        font-size: 0.8em;
+        padding-top: 0.08em; }
         
         .texty-timekeeper .info .nag {
             font-size: 90%;
-            margin-top: 0.25em;
-            margin-bottom: 0.3em }
+            margin-top: 0.2em }
         .texty-timekeeper .info .date {
             height: 35px;
             display: none }
