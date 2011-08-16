@@ -1,6 +1,6 @@
 describe('Timekeeper', function() {
     describe('when created', function() {
-        it('initializes with the given event, type, interval and onTick handler', function() {
+        it('initializes with the given event, type and interval', function() {
             var expectedEvent = 'New Year!';
             var expectedType = 'texty';
             var expectedInterval = 1000 * 60;
@@ -9,14 +9,12 @@ describe('Timekeeper', function() {
             var clock = new Timekeeper({
                 event: expectedEvent,
                 type: expectedType,
-                interval: expectedInterval,
-                onTick: expectedTickHandler
+                interval: expectedInterval
             });
             
             expect(clock.event).toEqual(expectedEvent);
             expect(clock.type).toEqual(expectedType);
             expect(clock.interval).toBe(expectedInterval);
-            expect(clock.onTick).toBe(expectedTickHandler);
         });
         
         it('initializes a TimeSlice with the reference and focus times', function() {
@@ -65,40 +63,36 @@ describe('Timekeeper', function() {
             expect(tracker.value).toHaveBeenCalledWith(518400000);
         });
         
-        describe('given an onTick handler', function() {
-            it('calls the onTick handler', function() {
-                var tickHandler = jasmine.createSpy();
-                
-                var clock = new Timekeeper({
-                    reference: new Date(2011, 11, 1),
-                    focus: new Date(2012, 0, 1),
-                    onTick: tickHandler
-                });
-                
-                clock.tick();
-                
-                expect(tickHandler).toHaveBeenCalled();
+        it('calls the onTick handler', function() {
+            var clock = new Timekeeper({
+                reference: new Date(2011, 11, 1),
+                focus: new Date(2012, 0, 1)
             });
+            spyOn(clock, 'onTick');
+            
+            clock.tick();
+            
+            expect(clock.onTick).toHaveBeenCalled();
+        });
 
-            it('calls the onTick handler with the object as the context (this)', function() {
-                var expectedEvent = 'Important event';
-                
-                var actualEvent = '';
-                var tickHandler = function() {
-                    actualEvent = this.event;
-                };
-                
-                var clock = new Timekeeper({
-                    event: expectedEvent,
-                    reference: new Date(2011, 11, 1),
-                    focus: new Date(2012, 0, 1),
-                    onTick: tickHandler
-                });
-                
-                clock.tick();
-                
-                expect(actualEvent).toEqual(expectedEvent);
+        it('calls the onTick handler with the object as the context (this)', function() {
+            var expectedEvent = 'Important event';
+            
+            var actualEvent = '';
+            var tickHandler = function() {
+                actualEvent = this.event;
+            };
+            
+            var clock = new Timekeeper({
+                event: expectedEvent,
+                reference: new Date(2011, 11, 1),
+                focus: new Date(2012, 0, 1),
             });
+            clock.onTick = tickHandler;
+            
+            clock.tick();
+            
+            expect(actualEvent).toEqual(expectedEvent);
         });
     });
 
@@ -176,6 +170,14 @@ describe('Timekeeper', function() {
             });
         });
         
+        it('calls the viewModel generator', function() {
+            spyOn(clock, 'viewModel');
+            
+            clock.render('');
+            
+            expect(clock.viewModel).toHaveBeenCalled();
+        });
+
         it('renders the given template with json representaion of the timer', function() {
             var output = clock.render('This is "{event}" as {type}');
             
@@ -204,62 +206,24 @@ describe('Timekeeper', function() {
             expect(output).toEqual(expectedOutput);
         });
         
-    });
-});
-
-describe('Timekeeper + viewModel generator', function() {
-
-    describe('when created', function() {
-        it('initializes with the given viewModel generator', function() {
-            var expectedEvent = 'New Year!';
-            var expectedViewModelGenerator = function () {}
+        describe('given a custom viewModel generator', function() {
             
-            var clock = new Timekeeper({
-                viewModel: expectedViewModelGenerator
-            });
-            
-            expect(clock.viewModel).toBe(expectedViewModelGenerator);
-        });
-    });
-        
-    describe('#render', function() {
-        it('calls the viewModel generator', function() {
-            var viewModelGenerator = jasmine.createSpy();
-                
-            var clock = new Timekeeper({
-                reference: new Date(2011, 11, 1),
-                focus: new Date(2012, 0, 1),
-                viewModel: viewModelGenerator
-            });
-            
-            clock.render('');
-            
-            expect(viewModelGenerator).toHaveBeenCalled();
-        });
-        
-        it('renders the given template with the json representaion provided by the viewModel generator', function() {
-            spyOn(Date, 'now').andReturn(new Date(2011, 11, 26));
-            
-            clock = new Timekeeper({
-                event: 'The new year',
-                type: 'pure-text',
-                reference: new Date(2011, 11, 25),
-                focus: new Date(2012, 0, 1),
-                viewModel: function() {
+            it('renders the given template with the json representation provided by the viewModel generator', function() {
+                clock.viewModel = function() {
                     return {
                         event: this.event,
                         friendlyReminder: '5 days away'
                     };
                 }
+                
+                var expectedOutput = 'An event is 5 days away!';
+                
+                var template = '{event} is {friendlyReminder}!';
+                
+                var output = clock.render(template);
+                
+                expect(output).toEqual(expectedOutput);
             });
-            
-            var expectedOutput = 'The new year is 5 days away!';
-            
-            var template = '{event} is {friendlyReminder}!';
-            
-            var output = clock.render(template);
-            
-            expect(output).toEqual(expectedOutput);
         });
     });
 });

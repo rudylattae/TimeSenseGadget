@@ -85,8 +85,6 @@ function Timekeeper(options) {
     this.event = options.event ? options.event : null;
     this.type = options.type ? options.type : null;
     this.interval = options.interval ? options.interval : null;
-    this.onTick = options.onTick ? options.onTick : null;
-    this.viewModel = options.viewModel ? options.viewModel : null;
     
     if (options.reference && options.focus) {
         this.slice = new TimeSlice({
@@ -100,18 +98,21 @@ function Timekeeper(options) {
         this.tracker.percent(100);
     }
 }
+
+Timekeeper.prototype.onTick = function() {}
+
 Timekeeper.prototype.tick = function() {
     this.tracker.value(this.slice.remaining());
-    if (this.onTick) {
-        this.onTick.call(this);
-    }
+    this.onTick.call(this);
 }
+
 Timekeeper.prototype.start = function() {
     var self = this;
     this._timer = setInterval(function() {
         self.tick();
     }, this.interval);
 }
+
 Timekeeper.prototype.toJSON = function() {
     return {
         event: this.event,
@@ -120,13 +121,32 @@ Timekeeper.prototype.toJSON = function() {
         tracker: this.tracker.toJSON()
     };
 }
+
+Timekeeper.prototype.viewModel = function() { return this.toJSON(); }
+
 Timekeeper.prototype.render = function(template) {
-    var json = {};
-    
-    if (this.viewModel) {
-        json = this.viewModel.call(this);
-    } else {
-        json = this.toJSON();
-    }
+    var json = this.viewModel.call(this);
     return tofu(template, json);
+}
+
+
+/**
+ * Pure text implementation of a timekeeper.
+ */
+function TextyTimekeeper(options) {
+    var options = options || {};
+    
+    options.type = options.type || "texty";
+    
+    Timekeeper.call(this, options);
+}
+
+TextyTimekeeper.prototype = new Timekeeper;
+TextyTimekeeper.prototype.constructor = TextyTimekeeper;
+
+TextyTimekeeper.prototype.onTick = function() {
+
+}
+TextyTimekeeper.prototype.viewModel = function() {
+
 }
