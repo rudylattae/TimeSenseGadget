@@ -17,7 +17,7 @@ function ProgressTracker(options) {
     this._value = 0;
 }
 ProgressTracker.prototype.value = function(value) {
-    if (value) {
+    if (typeof value !== 'undefined') {
         if (value > this.max) {
             this._value = this.max;
         } else if (value < this.min) {
@@ -153,7 +153,8 @@ TextyTimekeeper.prototype.viewModel = function() {
 
 }
 
-TextyTimekeeper.prototype.getHint = function() {
+TextyTimekeeper.prototype.hint = function() {
+    return util.hintForValue(this.tracker.percent());
 }
 
 

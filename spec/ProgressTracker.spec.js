@@ -31,6 +31,13 @@ describe('ProgressTracker', function() {
             expect(tracker.value()).toEqual(9);
         });
         
+        it('sets the value to 0 given a parameter 0', function() {
+            tracker.value(5);
+            tracker.value(0);
+            
+            expect(tracker.value()).toEqual(0);
+        });
+        
         it('sets the value to 10 (max) given a parameter 45 that is above the max', function() {
             tracker.value(45);
             
@@ -38,6 +45,7 @@ describe('ProgressTracker', function() {
         });
         
         it('sets the value to 0 (min) given a parameter -5 that is below the min', function() {
+            tracker.value(5);
             tracker.value(-5);
             
             expect(tracker.value()).toEqual(0);
