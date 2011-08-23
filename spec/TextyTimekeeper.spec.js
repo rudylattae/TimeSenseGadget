@@ -66,6 +66,64 @@ describe('TextyTimekeeper', function() {
         });
     });
     
+    describe('#counter', function() {
+        
+        var clock;
+        
+        beforeEach(function() {
+            clock = new TextyTimekeeper({
+                reference: new Date(2010, 8, 1),
+                focus: new Date(2012, 0, 1)
+            });
+        });
+        
+        describe('when focus is months away', function() {
+            it('returns "a month to" given a focus that is 30 days away', function() {
+                spyOn(Date, 'now').andReturn(new Date(2011, 11, 1));
+                                
+                expect(clock.counter()).toBe('a month to');
+            });
+            
+            it('returns "a month to" given a focus that is 25 days away', function() {
+                spyOn(Date, 'now').andReturn(new Date(2011, 11, 7));
+                                
+                expect(clock.counter()).toBe('a month to');
+            });
+            
+            it('returns "2 months to" given a focus that is 2 months away', function() {
+                spyOn(Date, 'now').andReturn(new Date(2011, 10, 5));
+                
+                expect(clock.counter()).toBe('2 months to');
+            });
+            
+            it('returns "1 months to" given a focus that is 11 months away', function() {
+                spyOn(Date, 'now').andReturn(new Date(2011, 1, 1));
+                
+                expect(clock.counter()).toBe('11 months to');
+            });
+        });
+        
+        describe('when focus is days away', function() {
+            it('returns a readable description: "22 days to" given a focus that is 22 days away', function() {
+                spyOn(Date, 'now').andReturn(new Date(2011, 11, 10));
+                
+                expect(clock.counter()).toBe('22 days to');
+            });
+            
+            it('returns a readable description: "5 days to" given a focus that is 5 days away', function() {
+                spyOn(Date, 'now').andReturn(new Date(2011, 11, 27));
+                
+                expect(clock.counter()).toBe('5 days to');
+            });
+            
+            it('returns a readable description: "a days to" given a focus that is 1 day away', function() {
+                spyOn(Date, 'now').andReturn(new Date(2011, 11, 31));
+                
+                expect(clock.counter()).toBe('a day to');
+            });
+        });
+    });
+    
     xdescribe('#viewModel', function() {
         it('generates a viewModel', function() {
             

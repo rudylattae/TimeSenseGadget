@@ -157,6 +157,12 @@ TextyTimekeeper.prototype.hint = function() {
     return util.hintForValue(this.tracker.percent());
 }
 
+TextyTimekeeper.prototype.counter = function() {
+    _date.relativeTime.future = "%s to";
+    _date.relativeTime.past = "%s since";
+    return _date(this.slice.focus).from(Date.now());;
+}
+
 
 /**
  * Timekeeper related utils
