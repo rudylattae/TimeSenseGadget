@@ -150,7 +150,14 @@ TextyTimekeeper.prototype.onTick = function() {
 }
 
 TextyTimekeeper.prototype.viewModel = function() {
-
+    var model = this.toJSON();
+    var progress = this.progressIndicator();
+    model.progress = progress == '' ? '&nbsp;' : progress;
+    model.hint = this.hint();
+    model.counter = this.counter();
+    model.friendlyDate = this.friendlyDate(); 
+    model.scale = this.progressIndicatorScale();
+    return model;
 }
 
 TextyTimekeeper.prototype.hint = function() {
@@ -184,7 +191,7 @@ TextyTimekeeper.prototype.progressIndicatorScale = function() {
     return {
         empty: 0,
         max: _date(this.slice.focus).from(_date(this.slice.reference), true),
-    }
+    };
 }
 
 

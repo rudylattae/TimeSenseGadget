@@ -163,9 +163,22 @@ describe('TextyTimekeeper', function() {
         });
     });
     
-    xdescribe('#viewModel', function() {
-        it('generates a viewModel', function() {
+    describe('#viewModel', function() {
+        it('generates a viewModel with progressIndicator, scale, hint, counter and friendlyDate', function() {
+            spyOn(Date, 'now').andReturn(new Date(2011, 11, 1));
             
+            var clock = new TextyTimekeeper({
+                reference: new Date(2011, 11, 1),
+                focus: new Date(2012, 0, 1)
+            });
+            
+            var viewModel = clock.viewModel();
+            
+            expect(viewModel.progress.length).toEqual(36);
+            expect(viewModel.scale).toEqual({empty:0, max: 'a month'});
+            expect(viewModel.hint).toEqual('full');
+            expect(viewModel.counter).toEqual('a month to');
+            expect(viewModel.friendlyDate).toEqual('Sun, Jan 1st 2012 12:00:00 am');
         });
     });
     
