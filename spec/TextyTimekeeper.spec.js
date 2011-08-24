@@ -124,6 +124,17 @@ describe('TextyTimekeeper', function() {
         });
     });
     
+    describe('#friendlyDate', function() {
+        it('returns a human readable format of the focus date', function() {
+            var clock = new TextyTimekeeper({
+                reference: new Date(2010, 8, 1),
+                focus: new Date(2012, 0, 1)
+            });
+            
+            expect(clock.friendlyDate()).toEqual('Sun, Jan 1st 2012 12:00:00 am');
+        });
+    });
+    
     xdescribe('#viewModel', function() {
         it('generates a viewModel', function() {
             

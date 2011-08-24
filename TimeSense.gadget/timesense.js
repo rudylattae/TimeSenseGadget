@@ -163,6 +163,10 @@ TextyTimekeeper.prototype.counter = function() {
     return _date(this.slice.focus).from(Date.now());;
 }
 
+TextyTimekeeper.prototype.friendlyDate = function() {
+    return _date(this.slice.focus).format('ddd, MMM Do YYYY h:mm:ss a');
+}
+
 
 /**
  * Timekeeper related utils
