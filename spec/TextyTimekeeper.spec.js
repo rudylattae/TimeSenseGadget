@@ -135,6 +135,34 @@ describe('TextyTimekeeper', function() {
         });
     });
     
+    describe('#progressIndicator', function() {
+        it('returns text-based progress bars based on tracker percentage', function() {
+            spyOn(Date, 'now').andReturn(new Date(2011, 11, 1));
+            
+            var clock = new TextyTimekeeper({
+                reference: new Date(2011, 11, 1),
+                focus: new Date(2012, 0, 1)
+            });
+            
+            var progressIndicator = clock.progressIndicator();
+            
+            expect(progressIndicator.length).toEqual(36);
+        });
+    });
+    
+    describe('#progressIndicatorScale', function() {
+        it('returns min and max values for the scale used to draw the progress indicator', function() {
+            var clock = new TextyTimekeeper({
+                reference: new Date(2011, 11, 1),
+                focus: new Date(2012, 0, 1)
+            });
+            
+            var progressIndicatorScale = clock.progressIndicatorScale();
+            
+            expect(progressIndicatorScale).toEqual({empty:0, max: 'a month'});
+        });
+    });
+    
     xdescribe('#viewModel', function() {
         it('generates a viewModel', function() {
             

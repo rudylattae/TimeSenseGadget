@@ -167,6 +167,26 @@ TextyTimekeeper.prototype.friendlyDate = function() {
     return _date(this.slice.focus).format('ddd, MMM Do YYYY h:mm:ss a');
 }
 
+TextyTimekeeper.prototype.progressIndicator = function() {
+    var marker = '|';
+    var maxMarkers = 36;
+
+    var limit = (this.tracker.percent() / 100) * maxMarkers;
+    var progress = '';
+    for (i=1; i<=limit; i++) {
+        progress += marker;
+    }
+    
+    return progress;
+}
+
+TextyTimekeeper.prototype.progressIndicatorScale = function() {
+    return {
+        empty: 0,
+        max: _date(this.slice.focus).from(_date(this.slice.reference), true),
+    }
+}
+
 
 /**
  * Timekeeper related utils
