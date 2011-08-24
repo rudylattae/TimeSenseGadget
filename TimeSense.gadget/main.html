@@ -13,8 +13,8 @@
         <div class="scale clearfix"><span class="empty">{scale.empty}</span><span class="max">{scale.max}</span></div>
         <div class="clear"></div>
         <div class="info">
-            <div class="nag">{nag}</div>
-            <div class="date" title="Click to show event"><a id="show-event" href="">{date}</a></div>
+            <div class="counter">{counter}</div>
+            <div class="date" title="Click to show event"><a id="show-event" href="">{friendlyDate}</a></div>
             <div class="event" title="Click to show date"><a id="show-date" href="">{event}</a></div>
         </div>
     </div>
@@ -23,83 +23,58 @@
 <script type="text/javascript" src="lib/zyx.js"></script>
 <script type="text/javascript" src="core.js"></script>
 <script type="text/javascript" src="timesense.js"></script>
-<script type="text/javascript">
-    var template = $('#texty-timekeeper-html').html();
+<script type="text/javascript">   
+    var clock = null;
     
-    _date.relativeTime.future = "%s to";
-    _date.relativeTime.past = "%s since";
-   
     System.Gadget.settingsUI = 'settings.html'; 
     System.Gadget.onSettingsClosed = settingsClosed;
-
         
     function settingsClosed(e) {
         if (e.closeAction === e.Action.commit) {
-            customize();
+            init();
         }
     }
-
-    function getTextyProgress(percent) {
-        var marker = '|';
-        var maxMarkers = 36;
-
-        var limit = (percent / 100) * maxMarkers;
-        var progress = '';
-        for (i=1; i<=limit; i++) {
-            progress += marker;
+    
+    function registerHandlers() {
+        document.onclick = function(e) {
+            if (window.event.srcElement.id === 'show-date') {
+                $('.date').show();
+                $('.event').hide();
+                window.event.returnValue = false;
+                return false;
+            }
+            if (window.event.srcElement.id === 'show-event') {
+                $('.event').show();
+                $('.date').hide();
+                window.event.returnValue = false;
+                return false;
+            }
+        };
+    }
+    
+    function init() {
+        config.load();
+        
+        if (clock) {
+            clock.stop();
+        }
+        clock = new TextyTimekeeper({
+            event: config.values.what,
+            reference: new Date(2011, 6, 1),
+            focus: new Date(2012, 0, 1),
+            interval: 1000 * 60
+        });
+        
+        var template = $('#texty-timekeeper-html').html();
+        clock.onTick = function() {
+            $('#content').html(this.render(template));
         }
         
-        return progress;
+        clock.tick();
+        clock.start();
     }
     
-    var clock = new Timekeeper({
-        event: "New Year 2012!",
-        type: 'texty',
-        reference: new Date(2011, 6, 1),
-        focus: new Date(2012, 0, 1),
-        interval: 1000 * 60,
-        onTick: function() {
-            $('#content').html(this.render(template));
-        },
-        viewModel: function() {
-            var model = this.toJSON();
-            var progress = getTextyProgress(model.tracker.percent);
-            model.progress = progress == '' ? '&nbsp;' : progress;
-            model.hint = getHint(model.tracker.percent);
-            model.nag = _date(model.slice.focus).from(Date.now());
-            model.date = _date(model.slice.focus).format("ddd, MMM Do YYYY h:mm:ss a"); 
-            model.scale = { 
-                empty: 0,
-                max: _date(model.slice.focus).from(_date(model.slice.reference), true)
-            };
-            return model;
-        }
-    });
-    clock.tick();
-    clock.start();
-    
-    
-    
-    document.onclick = function(e) {
-        if (window.event.srcElement.id === 'show-date') {
-            $('.date').show();
-            $('.event').hide();
-            window.event.returnValue = false;
-            return false;
-        }
-        if (window.event.srcElement.id === 'show-event') {
-            $('.event').show();
-            $('.date').hide();
-            window.event.returnValue = false;
-            return false;
-        }
-    };
-    
-    
-    
-    function customize() {
-        config.load();        
-        $('.date').html(config.values.what);
-    }
+    registerHandlers();
+    init();
 </script>
 </html>

@@ -118,6 +118,27 @@ describe('Timekeeper', function() {
         });
     });
     
+    describe('#stop', function() {
+        it('kills the timer', function() {
+            var clock = new Timekeeper({
+                reference: new Date(2011, 11, 1),
+                focus: new Date(2012, 0, 1),
+                interval: 150
+            });
+            jasmine.Clock.useMock();
+            spyOn(clock, 'tick');
+            
+            clock.start();
+            clock.stop();
+            
+            runs(function() {
+                jasmine.Clock.tick(150);
+            
+                expect(clock.tick).not.toHaveBeenCalled();
+            });
+        });
+    });
+    
     describe('#toJSON', function() {        
         it('returns a JSON representation of the clock and its sub-components', function() {
             spyOn(Date, 'now').andReturn(new Date(2011, 11, 26));

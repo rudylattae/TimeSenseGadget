@@ -113,6 +113,12 @@ Timekeeper.prototype.start = function() {
     }, this.interval);
 }
 
+Timekeeper.prototype.stop = function() {
+    if (this._timer) {
+        clearInterval(this._timer);
+    }
+}
+
 Timekeeper.prototype.toJSON = function() {
     return {
         event: this.event,
@@ -190,7 +196,7 @@ TextyTimekeeper.prototype.progressIndicator = function() {
 TextyTimekeeper.prototype.progressIndicatorScale = function() {
     return {
         empty: 0,
-        max: _date(this.slice.focus).from(_date(this.slice.reference), true),
+        max: _date(this.slice.focus).from(_date(this.slice.reference), true)
     };
 }
 
