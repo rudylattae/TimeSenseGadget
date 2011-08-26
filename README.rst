@@ -4,8 +4,8 @@ TimeSense
 An alternative timer for those who have difficulty "seeing" time -- 
 Windows Desktop Gadget flavour.
 
-TimeSense is an attempt to create a tool that visualizes times a finite 
-resource. Instead of a simple "count down", you can see a progress indicator 
+TimeSense is a tool that represents time as a finite resource. 
+Instead of a simple "count down", you can see a progress indicator 
 that reduces over time until the target date is reached. For added clarity and 
 (potentially) to convey a sense of urgency, the indicator also 
 changes color as time passes.
@@ -24,3 +24,4 @@ stimulating than a simple countdown of say "10 days to Trade show".
 
 The goal of TimeSense is to convey concise information about the progress towards a 
 future event without being overwhelming.
+
