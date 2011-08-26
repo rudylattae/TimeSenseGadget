@@ -74,7 +74,7 @@
             event: config.values.event,
             focus: _date(config.values.focus),
             reference: _date(config.values.reference),
-            interval: 1000
+            interval: parseInt(config.values.interval)
         });
         
         var template = $('#texty-timekeeper-html').html();

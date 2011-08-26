@@ -7,6 +7,7 @@ function Configurator() {
         'event': 'New Year 2012!',
         'focus': 'Jan 1 2012',
         'reference': _date(Date.now()).format('MMM D YYYY hh:mm:ss a'),
+        'interval': '3000',
         'toggleDateEvent': 'event'
     };
     this.values = defaults;
