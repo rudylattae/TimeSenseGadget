@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <gadget>
     <name>Time Sense</name>
-    <description>An alternative timer for those who have difficulty "seeing" time</description>
     <version>0.5.0</version>
     <author name="Rudy L.">
         <info url="rudyl.com" />
+        <logo src="logo.jpg" />
     </author>
     <copyright>&#0169; Rudy L.</copyright>
+    <description>An alternative timer for those who have difficulty "seeing" time</description>
+    <icons>
+        <icon height="94" width="130" src="icon.png" />
+    </icons>
     <hosts>
         <host name="sidebar">
             <autoscaleDPI>true</autoscaleDPI>
             <base type="HTML" apiVersion="1.0.0" src="main.html" />
             <permissions>Full</permissions>
             <platform minPlatformVersion="1.0" />
+            <defaultImage src="icon.png" />
         </host>
     </hosts>
 </gadget>
