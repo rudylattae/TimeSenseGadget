@@ -102,7 +102,11 @@
 
     // main
     // =======
-    init();
+    document.onreadystatechange = function() {
+        if (document.readyState == 'complete') {
+            init();
+        }
+    }
 </script>
 
 </html>

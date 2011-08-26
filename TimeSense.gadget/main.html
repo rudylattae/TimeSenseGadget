@@ -87,7 +87,11 @@
         clock.start();
     }
     
-    registerHandlers();
-    init();
+    document.onreadystatechange = function() {
+        if (document.readyState == 'complete') {
+            registerHandlers();
+            init();
+        }
+    }
 </script>
 </html>
