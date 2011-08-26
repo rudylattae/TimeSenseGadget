@@ -52,7 +52,7 @@ a:focus {
         margin-bottom: 0.1em;
         border: 1px solid #555; }
         
-        .texty-timekeeper .indicator.max {
+        .texty-timekeeper .indicator.full {
             color: #33cc33 }
         .texty-timekeeper .indicator.high {
             color: #669900 }

@@ -38,18 +38,30 @@
     function registerHandlers() {
         document.onclick = function(e) {
             if (window.event.srcElement.id === 'show-date') {
-                $('.date').show();
-                $('.event').hide();
+                config.values.toggleDateEvent = 'date';
+                config.save();
+                toggleDateEvent();
                 window.event.returnValue = false;
                 return false;
             }
             if (window.event.srcElement.id === 'show-event') {
-                $('.event').show();
-                $('.date').hide();
+                config.values.toggleDateEvent = 'event';
+                config.save();
+                toggleDateEvent();
                 window.event.returnValue = false;
                 return false;
             }
         };
+    }
+    
+    function toggleDateEvent() {
+        if (config.values.toggleDateEvent === 'event') {
+            $('.event').show();
+            $('.date').hide();
+        } else {
+            $('.date').show();
+            $('.event').hide();
+        } 
     }
     
     function init() {
@@ -59,15 +71,16 @@
             clock.stop();
         }
         clock = new TextyTimekeeper({
-            event: config.values.what,
-            reference: new Date(2011, 6, 1),
-            focus: new Date(2012, 0, 1),
-            interval: 1000 * 60
+            event: config.values.event,
+            focus: _date(config.values.focus),
+            reference: _date(config.values.reference),
+            interval: 1000
         });
         
         var template = $('#texty-timekeeper-html').html();
         clock.onTick = function() {
             $('#content').html(this.render(template));
+            toggleDateEvent();
         }
         
         clock.tick();
