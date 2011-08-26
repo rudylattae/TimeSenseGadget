@@ -1,10 +1,10 @@
-TimeSense
-==========
+Time Sense
+============
 
 An alternative timer for those who have difficulty "seeing" time -- 
 Windows Desktop Gadget flavour.
 
-TimeSense is a tool that represents time as a finite resource. 
+Time Sense is a tool that represents time as a finite resource. 
 Instead of a simple "count down", you can see a progress indicator 
 that reduces over time until the target date is reached. For added clarity and 
 (potentially) to convey a sense of urgency, the indicator also 
@@ -22,6 +22,6 @@ When the sand passes from one half of an hour glass to the other, it visualizes 
 as a limited resource that is running out. I find this to be way more informative and 
 stimulating than a simple countdown of say "10 days to Trade show".
 
-The goal of TimeSense is to convey concise information about the progress towards a 
+The goal of Time Sense is to convey concise information about the progress towards a 
 future event without being overwhelming.
 
