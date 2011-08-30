@@ -3,7 +3,7 @@
 setlocal
 
 set default_gadget_name=TimeSense
-set default_gadget_version=0.5.2-dev
+set default_gadget_version=0.5.3dev
 
 if not "%1"=="" (set "gadget_name=%1") else (set gadget_name=%default_gadget_name%)
 if not "%2"=="" (set "gadget_version=%2") else (set gadget_version=%default_gadget_version%)
