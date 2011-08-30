@@ -4,6 +4,8 @@ Time Sense
 An alternative timer for those who have difficulty "seeing" time -- 
 Windows Desktop Gadget flavour.
 
+.. image:: https://github.com/rudylattae/TimeSenseGadget/raw/master/TimeSense.gadget/icon.png
+
 Time Sense is a tool that represents time as a finite resource. 
 Instead of a simple "count down", you can see a progress indicator 
 that reduces over time until the target date is reached. For added clarity and 
