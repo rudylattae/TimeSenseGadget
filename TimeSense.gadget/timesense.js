@@ -1,11 +1,3 @@
-
-/**
- * ECMAScript 5 polyfill for Date.now method
- * https://gist.github.com/1035932
- */
-Date.now = Date.now || function(){ return+new Date }
-
-
 /**
  * A basic progress tracker. Accepts progres as either absolute value or percentage.
  */

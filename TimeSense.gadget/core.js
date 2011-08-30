@@ -1,4 +1,3 @@
-
 /**
  * Simple configuration manager -- load + save
  */
@@ -48,5 +47,3 @@ Configurator.prototype = {
         System.Gadget.Settings.write('customized', true);
     }
 }
-
-var config = new Configurator;

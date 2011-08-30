@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <gadget>
     <name>Time Sense</name>
-    <version>0.5.0</version>
+    <version>0.5.1</version>
     <author name="Rudy L.">
         <info url="rudyl.com" />
         <logo src="logo.jpg" />

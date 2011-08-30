@@ -24,7 +24,8 @@
 <script type="text/javascript" src="core.js"></script>
 <script type="text/javascript" src="timesense.js"></script>
 <script type="text/javascript">   
-    var clock = null;
+    var config = new Configurator,
+        clock = null;
     
     System.Gadget.settingsUI = 'settings.html'; 
     System.Gadget.onSettingsClosed = settingsClosed;

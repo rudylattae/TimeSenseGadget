@@ -1,3 +1,70 @@
+// Polyfills and microjs helpers
+// ================================
+
+
+// JS Core
+// ----------
+ 
+/**
+ * ECMAScript 5 polyfill for Date.now method
+ * https://gist.github.com/1035932
+ */
+Date.now = Date.now || function(){ return+new Date }
+
+
+// Strings/Templates
+// -------------------
+
+/**
+ * https://gist.github.com/1075080
+ */
+function tofu(a,c){return a.replace(/{ *([^} ]+) *}/g,function(b,a){b=c;a.replace(/[^.]+/g,function(a){b=b[a]});return b})};
+
+
+// DOM
+// -------
+
+/**
+ * NodeList polyfill for browsers without
+ */
+if (typeof NodeList === 'undefined') {
+    function NodeList(el) {
+        if (el instanceof Array) {
+            for (var i=0, len=el.length; i<len; i++) {
+                this[i] = el[i];
+            }
+            this.length = el.length;
+        } else {
+            this['0'] = el;
+            this.length = 1;
+        }
+    }
+    NodeList.prototype.item = function() {};
+}
+
+
+/**
+ * Polyfill for document.getElementsByClassName
+ */
+document.getElementsByClassName = document.getElementsByClassName || function (searchClass,node,tag) {
+  var classElements = new Array();
+  if ( node == null )
+    node = document;
+  if ( tag == null )
+    tag = '*';
+  var els = node.getElementsByTagName(tag);
+  var elsLen = els.length;
+  var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
+  for (i = 0, j = 0; i < elsLen; i++) {
+    if ( pattern.test(els[i].className) ) {
+      classElements[j] = els[i];
+      j++;
+    }
+  }
+  return classElements;
+}
+
+
 /**
  * Functions to attach to a list of nodes that make life easier
  */
@@ -80,46 +147,6 @@ var NodeHelpers = {
 };
 
 /**
- * NodeList polyfill for browsers without
- */
-if (typeof NodeList === 'undefined') {
-    function NodeList(el) {
-        if (el instanceof Array) {
-            for (var i=0, len=el.length; i<len; i++) {
-                this[i] = el[i];
-            }
-            this.length = el.length;
-        } else {
-            this['0'] = el;
-            this.length = 1;
-        }
-    }
-    NodeList.prototype.item = function() {};
-}
-
-
-/**
- * Polyfill for document.getElementsByClassName
- */
-document.getElementsByClassName = document.getElementsByClassName || function (searchClass,node,tag) {
-  var classElements = new Array();
-  if ( node == null )
-    node = document;
-  if ( tag == null )
-    tag = '*';
-  var els = node.getElementsByTagName(tag);
-  var elsLen = els.length;
-  var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
-  for (i = 0, j = 0; i < elsLen; i++) {
-    if ( pattern.test(els[i].className) ) {
-      classElements[j] = els[i];
-      j++;
-    }
-  }
-  return classElements;
-}
-
-/**
  * Builds and returns a selector engine using either document.querySelectorAll or 
  * cssSelect https://gist.github.com/991057
  * If a helpers module is provided, the selector engine augments the matching NodeList
@@ -154,9 +181,3 @@ var q = function(document, helpers) {
  * Your friendly neighborhood "$" selector, with just the right amount of "super"
  */
 var $ = $ || q(document, NodeHelpers);
-
-
-/**
- * https://gist.github.com/1075080
- */
-function tofu(a,c){return a.replace(/{ *([^} ]+) *}/g,function(b,a){b=c;a.replace(/[^.]+/g,function(a){b=b[a]});return b})};
